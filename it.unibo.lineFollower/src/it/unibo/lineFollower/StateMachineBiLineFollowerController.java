@@ -13,7 +13,7 @@ import it.unibo.iot.robot.IRobot;
 //	 |________|  ->
 //==================================LINE===============
 
-public class StateMachineBiLineFollowerController extends AbstractStateMachineLineFollowerController{
+public class StateMachineBiLineFollowerController extends AbstractStateMachineLineFollowerController {
 	
 	public StateMachineBiLineFollowerController(RobotSpeedValue defaultSpeed,
 			IRobot robotToControl, boolean isForward) {
@@ -71,5 +71,6 @@ public class StateMachineBiLineFollowerController extends AbstractStateMachineLi
 
 		}
 	}
+
 
 }

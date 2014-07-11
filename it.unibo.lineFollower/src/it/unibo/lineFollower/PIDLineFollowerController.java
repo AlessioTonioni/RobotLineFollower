@@ -41,6 +41,8 @@ public class PIDLineFollowerController implements ILineFollowerController {
 	protected int kDerivative=1;
 	protected int kIntegral=1;
 
+	private volatile boolean running = true;
+	
 	public PIDLineFollowerController(RobotSpeedValue defaultSpeed, IDifferentialDriveRobot robot, boolean isForward){
 		this.robot=robot;
 		this.speed=defaultSpeed;
@@ -63,6 +65,10 @@ public class PIDLineFollowerController implements ILineFollowerController {
 		}
 	}
 
+	public void terminate() {
+		running = false;
+	}
+	
 	public void updateError(IDetection detection){
 		switch (detection.getDirection()){
 		case EAST:
@@ -85,31 +91,7 @@ public class PIDLineFollowerController implements ILineFollowerController {
 
 	@Override
 	public void doJob(){
-		IConfiguration conf = Configurator.getConfiguration();
-		final PIDLineFollowerController myself=this;
-
-		IDetectorObserver obsDetectorObserver = new IDetectorObserver() {
-
-			@Override
-			public void notify(IDetection detection) {
-				myself.updateError(detection);
-			}
-		};
-		IDetectorObservable [] detectorObservables = conf.getLineDetectorObservables();
-		for (IDetectorObservable iDetectorObservable : detectorObservables) {
-			iDetectorObservable.addObserver(obsDetectorObserver);
-		}
-
-		System.out.println("ReadyToStart!");
-		while(true){  
-			try{
-				robot.execute(calculateNewCommand());
-				Thread.sleep(16); //60Hz 
-			}catch(Exception e){
-				continue;
-			}
-		}
-
+		run();
 	}
 
 
@@ -139,6 +121,35 @@ public class PIDLineFollowerController implements ILineFollowerController {
 	@Override
 	public void setForward(boolean isForward) {
 		this.isForward=isForward;
+
+	}
+
+	@Override
+	public void run() {
+		IConfiguration conf = Configurator.getConfiguration();
+		final PIDLineFollowerController myself=this;
+
+		IDetectorObserver obsDetectorObserver = new IDetectorObserver() {
+
+			@Override
+			public void notify(IDetection detection) {
+				myself.updateError(detection);
+			}
+		};
+		IDetectorObservable [] detectorObservables = conf.getLineDetectorObservables();
+		for (IDetectorObservable iDetectorObservable : detectorObservables) {
+			iDetectorObservable.addObserver(obsDetectorObserver);
+		}
+
+		System.out.println("ReadyToStart!");
+		while(running){  
+			try{
+				robot.execute(calculateNewCommand());
+				Thread.sleep(16); //60Hz 
+			}catch(Exception e){
+				continue;
+			}
+		}
 
 	}
 
