@@ -14,10 +14,11 @@ import utils.FastDatagramSocket;
 public class cmdClient {
 	public static void main(String args[]) throws IOException{
 		FastDatagramSocket announcer=new FastDatagramSocket('m',54321);
-		InetAddress multi=InetAddress.getByName("230.0.0.1");
+		InetAddress multi=InetAddress.getByName("225.0.0.1");
 		announcer.join(multi);
 
 		System.out.println("Attesa server...");
+		System.out.println(announcer.receiveString());
 		Socket clientSocket=connectToServer(announcer.receiveString());
 		System.out.println("Connessione con il server stabilita");
 

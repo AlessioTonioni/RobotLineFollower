@@ -45,7 +45,9 @@ public class ListenerController {
 
 	public void doJob() throws IOException, InterruptedException{
 		while(true){
-			String cmdToExecute=cmdStream.readUTF();
+			byte[] cmd=new byte[512];
+			cmdStream.read(cmd);
+			String cmdToExecute=(new String(cmd,"UTF-8")).trim();
 			System.out.println(cmdToExecute);
 			/*
 			StringTokenizer cutter=new StringTokenizer(cmdToExecute);
