@@ -18,8 +18,8 @@ public class cmdClient {
 		announcer.join(multi);
 
 		System.out.println("Attesa server...");
-		System.out.println(announcer.receiveString());
-		Socket clientSocket=connectToServer(announcer.receiveString());
+		//System.out.println(announcer.receiveString());
+		Socket clientSocket=connectToServer("192.168.1.6@54321");
 		System.out.println("Connessione con il server stabilita");
 
 		BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
@@ -27,7 +27,10 @@ public class cmdClient {
 		while(true){
 			System.out.println("Next command: ");
 			String cmd=inFromUser.readLine();
-			outToServer.writeUTF(cmd);
+			byte[] msg=cmd.getBytes("UTF-8");
+			int size=msg.length;
+			outToServer.write((byte)size);
+			outToServer.write(msg);
 			outToServer.flush();
 		}
 	}

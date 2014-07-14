@@ -82,8 +82,8 @@ public class RobotToWheelStrategyDefault extends RobotToWheelSrategy {
 
 	 @Override
 	 IWheelCommand elaborate(RobotBackwardLeft command) {
-		IWheelSpeed leftSpeed = toBackwardSpeed(command.getSpeed());
-		IWheelSpeed rightSpeed = wheelSpeedDown(toBackwardSpeed((command.getSpeed())));
+		IWheelSpeed leftSpeed = wheelSpeedDown(toBackwardSpeed(command.getSpeed()));
+		IWheelSpeed rightSpeed = wheelSpeedUp(toBackwardSpeed((command.getSpeed())));
 		IWheel leftWheel = new Wheel(DDWheelID.LEFT.toString(), leftSpeed);
 		IWheel rightWheel = new Wheel(DDWheelID.RIGHT.toString(), rightSpeed);
 		return new WheelCommand(leftWheel, rightWheel);
@@ -91,8 +91,8 @@ public class RobotToWheelStrategyDefault extends RobotToWheelSrategy {
 
 	 @Override
 	 IWheelCommand elaborate(RobotBackwardRight command) {
-		IWheelSpeed leftSpeed = wheelSpeedDown(toBackwardSpeed(command.getSpeed()));
-		IWheelSpeed rightSpeed = toBackwardSpeed(command.getSpeed());
+		IWheelSpeed leftSpeed = wheelSpeedUp(toBackwardSpeed(command.getSpeed()));
+		IWheelSpeed rightSpeed = wheelSpeedDown(toBackwardSpeed(command.getSpeed()));
 		IWheel leftWheel = new Wheel(DDWheelID.LEFT.toString(), leftSpeed);
 		IWheel rightWheel = new Wheel(DDWheelID.RIGHT.toString(), rightSpeed);
 		return new WheelCommand(leftWheel, rightWheel);
