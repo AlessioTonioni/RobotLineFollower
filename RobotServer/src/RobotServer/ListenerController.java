@@ -38,35 +38,41 @@ public class ListenerController {
 	public ListenerController(Socket socket) throws IOException{
 		cmdReceiver = socket;
 		cmdStream = new DataInputStream(cmdReceiver.getInputStream());
-		//IConfiguration conf = Configurator.getConfiguration();
-		//robot=(IDifferentialDriveRobot)conf.getRealRobot();
+		IConfiguration conf = Configurator.getConfiguration();
+		robot=(IDifferentialDriveRobot)conf.getRealRobot();
 
 	}
 
 	public void doJob() throws IOException, InterruptedException{
 		while(true){
-			byte[] cmd=new byte[512];
-			cmdStream.read(cmd);
-			String cmdToExecute=(new String(cmd,"UTF-8")).trim();
+			int dim=cmdStream.read();
+			cmdStream.read(); cmdStream.read(); cmdStream.read();
+			byte[] cmd=new byte[dim];
+			System.out.println(dim);
+			int readed=cmdStream.read(cmd);
+			System.out.println(readed);
+			String cmdToExecute=new String(cmd,"UTF-8");
 			System.out.println(cmdToExecute);
-			/*
 			StringTokenizer cutter=new StringTokenizer(cmdToExecute);
 			String type=cutter.nextToken();
-			if(type.equals("cmd")){
+			if(type.equalsIgnoreCase("cmd")){
 				executeCommand(cutter.nextToken(),cutter.nextToken());
-			} else if(type.equals("cnt")){
+			} else if(type.equalsIgnoreCase("cnt")){
 				executeController(cutter.nextToken(),cutter.nextToken(),cutter.nextToken());
 			}
-			*/
 			
 		}
 	}
 
 	private void executeController(String cntType, String speed, String isForward) throws IOException, InterruptedException {
 		killController();
+		if(!CommandFactory.getInstance().isDefaultSpeedMode()){
+			CommandFactory.getInstance().switchMode();
+		}
 		switch (controllerType.valueOf(cntType)){
 		case PID:
-			controller=new PIDLineFollowerController(RobotSpeedValue.ROBOT_SPEED_LOW, robot,false);
+			//System.out.println("PID "+getSpeed(speed).getNumValue()+" "+Boolean.getBoolean(isForward));
+			controller=new PIDLineFollowerController(getSpeed(speed), robot,Boolean.getBoolean(isForward));
 			((PIDLineFollowerController)controller).configure("costanti.txt");
 			break;
 		case StateBiLine:
@@ -98,11 +104,14 @@ public class ListenerController {
 		killController();
 		IRobotCommand toExecute;
 		int vel;
+		if(CommandFactory.getInstance().isDefaultSpeedMode()){
+			CommandFactory.getInstance().switchMode();
+		}
 		try
 		{
 			vel=Integer.parseInt(nextToken2);
-			CommandFactory.getInstance().setSpeed(RobotSpeedValue.LIBERA.setNumValue(vel));
-			toExecute=CommandFactory.getInstance().getCommand(CommandType.valueOf(nextToken));
+			toExecute=CommandFactory.getInstance().getCommand(CommandType.valueOf(nextToken),vel);
+			System.out.println(toExecute.getStringRep());
 		}catch(Exception e){
 			toExecute=CommandFactory.getInstance().getCommand(CommandType.STOP);
 		}
@@ -116,4 +125,5 @@ public class ListenerController {
 			isRunning=false;
 		}
 	}
+	
 }

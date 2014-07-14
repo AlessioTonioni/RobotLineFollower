@@ -30,6 +30,8 @@ public class CommandFactory {
 	private IRobotCommand right;
 	private IRobotCommand stop;
 	
+	private boolean defaultSpeedMode=true;
+	
 	private CommandFactory(){
 		speed=new RobotSpeed(RobotSpeedValue.ROBOT_SPEED_LOW);
 		buildAllCommand();
@@ -38,6 +40,10 @@ public class CommandFactory {
 		if(instance==null)
 			instance=new CommandFactory();
 		return instance;
+	}
+	
+	public boolean isDefaultSpeedMode(){
+		return defaultSpeedMode;
 	}
 
 	public IRobotCommand getCommand(CommandType tipo){
@@ -64,9 +70,16 @@ public class CommandFactory {
 		throw new IllegalArgumentException();
 	}
 	
+	public IRobotCommand getCommand(CommandType tipo, int speedValue){
+		IRobotCommand result=getCommand(tipo);
+		result.getSpeed().getSpeed().setNumValue(speedValue);
+		return result;
+	}
+	
 	public IRobotCommand getCommand(String tipo){
 		return this.getCommand(CommandType.valueOf(tipo.toUpperCase()));
 	}
+	
 	public void setSpeed(RobotSpeedValue newSpeedValue){
 		if(speed.getSpeed()!=newSpeedValue){
 			speed=new RobotSpeed(newSpeedValue);
@@ -84,6 +97,7 @@ public class CommandFactory {
 		right=new RobotRight(speed);
 		stop=new RobotStop(speed);
 	}
+	
 	public IRobotCommand getOpposite(IRobotCommand currentCmd) {
 		if(currentCmd instanceof RobotForwardRight)
 			return forwardLeft;
@@ -94,5 +108,16 @@ public class CommandFactory {
 		else if(currentCmd instanceof RobotBackwardRight)
 			return backwardLeft;
 		return null;
+	}
+	
+	public void switchMode(){
+		if(defaultSpeedMode){
+			setSpeed(RobotSpeedValue.LIBERA);
+			buildAllCommand();
+		} else {
+			setSpeed(RobotSpeedValue.ROBOT_SPEED_LOW);
+			buildAllCommand();
+		}
+		defaultSpeedMode=!defaultSpeedMode;
 	}
 }
