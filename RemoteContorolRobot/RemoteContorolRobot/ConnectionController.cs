@@ -53,23 +53,6 @@ namespace RemoteContorolRobot
 
         public void Send(string data)
         {
-           /* // We are re-using the _socket object initialized in the Connect method
-            if (_socket != null)
-            {
-                // Create SocketAsyncEventArgs context object
-                SocketAsyncEventArgs socketEventArg = new SocketAsyncEventArgs();
-
-                // Set properties on context object
-                socketEventArg.RemoteEndPoint = _socket.RemoteEndPoint;
-                socketEventArg.UserToken = null;
-
-                // Add the data to be sent into the buffer
-                byte[] payload = Encoding.UTF8.GetBytes(data);
-                socketEventArg.SetBuffer(payload, 0, payload.Length);
-
-                // Make an asynchronous Send request over the socket
-                _socket.SendAsync(socketEventArg);
-            }*/
             Send(data, null);
         }
 
@@ -104,9 +87,8 @@ namespace RemoteContorolRobot
 
         internal void startFollowLine()
         {
-            String msgToSend = "cnt "+controllerType+" "+speed+" "+direction;
-            Send(msgToSend);
-
+            lastCmd = "cnt "+controllerType+" "+speed+" "+direction;
+            Send(lastCmd);
         }
 
         internal void sendStopCommand()
@@ -121,10 +103,10 @@ namespace RemoteContorolRobot
 
         internal void setDirection(string p)
         {
-            if (direction.Equals("Forward"))
-                direction = "True";
+            if (p.Equals("Forward"))
+                direction = "true";
             else
-                direction = "False";
+                direction = "false";
         }
 
         internal void setSpeed(int p)
