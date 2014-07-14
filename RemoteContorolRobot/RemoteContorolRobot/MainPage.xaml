@@ -1,0 +1,124 @@
+﻿<phone:PhoneApplicationPage
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:VirtualJoystick="clr-namespace:VirtualJoystick"
+    x:Class="RemoteContorolRobot.MainPage"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <phone:Pivot x:Name="PivotList" 
+                     Margin="-10,0,10,0"
+                     Grid.Row="0"
+                     Grid.Column="0">
+            <phone:PivotItem>
+                <StackPanel VerticalAlignment="Center">
+                    <TextBox Name="Serverip"  Width="400" Text="ip" TextAlignment="Center" Tap="Serverip_Tap_1" />
+                    <TextBox Name="ServerPort" Width="400" Text="porta" TextAlignment="Center" Margin="20" Tap="ServerPort_Tap_1" />
+                    <Button Name="Connect" Content="Connect" Click="Connect_Click"/>
+                    <TextBlock 
+                	x:Name="Status"
+                	Text="waiting for connection..."
+                	HorizontalAlignment="Center"
+                	VerticalAlignment="Center"
+                    Margin="20"/>
+                </StackPanel>
+            </phone:PivotItem>
+            
+            <phone:PivotItem>
+                <!--ContentPanel - place additional content here-->
+                <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+
+                    <StackPanel Grid.Row="0">
+
+                        <VirtualJoystick:VirtualJoystick 
+                	x:Name="joystick"
+                	HorizontalAlignment="Center" 
+                	VerticalAlignment="Center"
+                	Margin="58,30" StickMove="joystick_StickMove"/>
+
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1">
+                        <StackPanel  Orientation="Horizontal" HorizontalAlignment="Center" >
+                            <RadioButton Name="PID" Content="PID" GroupName="ControllerType" Checked="PID_Checked" IsChecked="True" />
+                            <RadioButton Name="Mono" Content="Mono" GroupName="ControllerType" Checked="Mono_Checked"/>
+                            <RadioButton Name="Bi" Content="Bi" GroupName="ControllerType" Checked="Bi_Checked"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <Slider 
+                        Name="SpeedSelector"
+                        Width="350"
+                        VerticalAlignment="Center" 
+                        Maximum="100" 
+                        SmallChange="1" 
+                        LargeChange="10" 
+                        ValueChanged="SpeedSelector_ValueChanged" 
+                        />
+                            <TextBlock 
+                        Name="SpeedSelected" 
+                        Text="0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        TextAlignment="Center"
+                        Width="100" FontSize="47"
+                        />
+                        </StackPanel>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0">
+                                <RadioButton Name="Forward" Content="Forward" GroupName="DirectionType" FontSize="25" Checked="Forward_Checked" IsChecked="True"/>
+                                <RadioButton Name="Backward" Content="Backward" GroupName="DirectionType" Checked="Backward_Checked"/>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <Button 
+                            Name="Start" 
+                            Content="Start!"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Width="150" Click="Start_Click"
+                            />
+                                <Button 
+                            Name="Stop"
+                            Content="Stop!"
+                            HorizontalAlignment="Center"
+                            Width="150" Click="Stop_Click"    />
+                            </StackPanel>
+                        </Grid>
+                    </StackPanel>
+
+
+                </Grid>
+            </phone:PivotItem>
+
+           
+        </phone:Pivot>
+
+    </Grid>
+
+
+</phone:PhoneApplicationPage>
