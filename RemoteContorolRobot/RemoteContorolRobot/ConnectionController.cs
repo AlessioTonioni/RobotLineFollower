@@ -77,9 +77,9 @@ namespace RemoteContorolRobot
         {
             byte[] msg = Encoding.UTF8.GetBytes(data);
             byte[] size = BitConverter.GetBytes(msg.Length);
-            byte[] payload = new byte[size.Length + msg.Length];
-            System.Buffer.BlockCopy(size, 0, payload, 0, size.Length);
-            System.Buffer.BlockCopy(msg, 0, payload, size.Length, msg.Length);
+            byte[] payload = new byte[1 + msg.Length];
+            System.Buffer.BlockCopy(size, 0, payload, 0, 1);
+            System.Buffer.BlockCopy(msg, 0, payload, 1, msg.Length);
             Send(payload, callback);
         }
 

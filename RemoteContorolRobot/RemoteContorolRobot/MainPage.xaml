@@ -18,7 +18,6 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <phone:Pivot x:Name="PivotList" 
@@ -39,11 +38,11 @@
                 </StackPanel>
             </phone:PivotItem>
             
-            <phone:PivotItem>
+            <phone:PivotItem Height="720">
                 <!--ContentPanel - place additional content here-->
                 <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
@@ -54,7 +53,7 @@
                 	x:Name="joystick"
                 	HorizontalAlignment="Center" 
                 	VerticalAlignment="Center"
-                	Margin="58,30" StickMove="joystick_StickMove"/>
+                	StickMove="joystick_StickMove"/>
 
                     </StackPanel>
 

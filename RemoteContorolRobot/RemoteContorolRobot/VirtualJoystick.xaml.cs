@@ -94,6 +94,12 @@ namespace VirtualJoystick
             Knob.MouseLeftButtonDown += Knob_MouseLeftButtonDown;
             Knob.MouseMove += Knob_MouseMove;
             Knob.MouseLeftButtonUp += Knob_MouseLeftButtonUp;
+            Knob.ManipulationCompleted += Knob_ManipulationCompleted;
+        }
+
+        void Knob_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            Knob_MouseLeftButtonUp(sender, null);
         }
 
         void Knob_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
