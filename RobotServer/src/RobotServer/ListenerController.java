@@ -46,7 +46,7 @@ public class ListenerController {
 	public void doJob() throws IOException, InterruptedException{
 		while(true){
 			int dim=cmdStream.read();
-			cmdStream.read(); cmdStream.read(); cmdStream.read();
+			//cmdStream.read(); cmdStream.read(); cmdStream.read();
 			byte[] cmd=new byte[dim];
 			System.out.println(dim);
 			int readed=cmdStream.read(cmd);
