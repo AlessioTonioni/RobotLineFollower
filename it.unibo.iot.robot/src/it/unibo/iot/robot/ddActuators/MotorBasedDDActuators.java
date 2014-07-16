@@ -45,6 +45,12 @@ public class MotorBasedDDActuators implements IDDActuators {
 		if (value == WheelSpeedValue.RHIGH || value == WheelSpeedValue.RMEDIUM || value == WheelSpeedValue.RLOW || value==WheelSpeedValue.RSETTABLE) {
 			return MotorState.CCW;
 		}
+		if(value == WheelSpeedValue.LWSETTABLE || value==WheelSpeedValue.RWSETTABLE){
+			if(value.getValue()>0)
+				return MotorState.CW;
+			else
+				return MotorState.CCW;
+		}
 		return MotorState.STOP;
 	}
 
@@ -58,11 +64,8 @@ public class MotorBasedDDActuators implements IDDActuators {
 		if (value == WheelSpeedValue.FLOW || value == WheelSpeedValue.RLOW) {
 			return MotorSpeedValue.MOTOR_SPEED_LOW;
 		}
-		if(value==WheelSpeedValue.FSETTABLE ){
-			return MotorSpeedValue.MOTOR_SPEED_SETTABLE.setValue(value.getValue());
-		}
-		if( value==WheelSpeedValue.RSETTABLE){
-			return MotorSpeedValue.MOTOR_SPEED_SETTABLE.setValue(-value.getValue());
+		if(value==WheelSpeedValue.FSETTABLE || value==WheelSpeedValue.RSETTABLE || value==WheelSpeedValue.RWSETTABLE||value==WheelSpeedValue.LWSETTABLE ){
+			return MotorSpeedValue.MOTOR_SPEED_SETTABLE.setValue(Math.abs(value.getValue()));
 		}
 		return  MotorSpeedValue.MOTOR_SPEED_LOW;
 	}

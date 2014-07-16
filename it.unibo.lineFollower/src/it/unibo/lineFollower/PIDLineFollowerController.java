@@ -55,7 +55,7 @@ public class PIDLineFollowerController implements ILineFollowerController {
 			BufferedReader reader=new BufferedReader(new FileReader(f));
 			String line=reader.readLine();
 			String[] constant=line.split(":");
-			System.out.println(constant[0]+constant[1]+constant[2]);
+			System.out.println("Proporzionale:"+constant[0]+" derivativa:"+constant[1]+" integrale:"+constant[2]);
 			kProportional=Integer.parseInt(constant[0]);
 			kDerivative=Integer.parseInt(constant[1]);
 			kIntegral=Integer.parseInt(constant[2]);
@@ -72,13 +72,18 @@ public class PIDLineFollowerController implements ILineFollowerController {
 	public void updateError(IDetection detection){
 		switch (detection.getDirection()){
 		case EAST:
-			error=-10;
+			if(detection.getVal())
+				error-=10;
+			else
+				error+=10;  //ho lasciato la linea, azzero l'errore relativo
 			break;
 		case WEST:
-			error=+10;
+			if(detection.getVal())
+				error+=10;
+			else
+				error-=10; //ho lasciato la linea, azzero l'errore relativo
 			break;
 		default:
-			error=0;
 			break;
 		}
 	}
@@ -96,20 +101,21 @@ public class PIDLineFollowerController implements ILineFollowerController {
 
 
 	protected IWheelCommand calculateNewCommand() {
-		integral=integral+error;
 		derivative=error-lastError;
-		int turn=(kProportional*error+kIntegral*integral+kDerivative*derivative)/1000;
+		integral=(error==0)?0:integral+error;
+		int turn=((kProportional*error)+(kIntegral*integral)+(kDerivative*derivative))/1000;
 		IWheelSpeed rightSpeed;
 		IWheelSpeed leftSpeed;
 
-		System.out.println(turn);
+		System.out.println("errore: "+error+" integrale:"+integral+" derivativo:"+derivative+" turn calcolata:" +turn);
 
+		lastError=error;
 		if(isForward){
-			rightSpeed=new WheelSpeed(WheelSpeedValue.FSETTABLE.setValue(speed.getNumValue()+turn));
-			leftSpeed=new WheelSpeed(WheelSpeedValue.FSETTABLE.setValue(speed.getNumValue()-turn));
+			rightSpeed=new WheelSpeed(WheelSpeedValue.RWSETTABLE.setValue(speed.getNumValue()+turn));
+			leftSpeed=new WheelSpeed(WheelSpeedValue.LWSETTABLE.setValue(speed.getNumValue()-turn));
 		} else {
-			rightSpeed=new WheelSpeed(WheelSpeedValue.RSETTABLE.setValue(-speed.getNumValue()+turn));
-			leftSpeed=new WheelSpeed(WheelSpeedValue.RSETTABLE.setValue(-speed.getNumValue()-turn));
+			rightSpeed=new WheelSpeed(WheelSpeedValue.RWSETTABLE.setValue(-speed.getNumValue()+turn));
+			leftSpeed=new WheelSpeed(WheelSpeedValue.LWSETTABLE.setValue(-speed.getNumValue()-turn));
 		}
 
 		IWheel leftWheel = new Wheel(DDWheelID.LEFT.toString(), leftSpeed);

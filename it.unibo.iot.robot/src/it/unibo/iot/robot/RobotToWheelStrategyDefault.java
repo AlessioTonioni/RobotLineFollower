@@ -38,7 +38,7 @@ public class RobotToWheelStrategyDefault extends RobotToWheelSrategy {
 
 	 @Override
 	 IWheelCommand elaborate(RobotForwardRight command) {
-		IWheelSpeed leftSpeed = wheelSpeedUp(toForwardSpeed(command.getSpeed()));
+		IWheelSpeed leftSpeed = toForwardSpeed(command.getSpeed());
 		IWheelSpeed rightSpeed = wheelSpeedDown(toForwardSpeed(command.getSpeed()));
 		IWheel leftWheel = new Wheel(DDWheelID.LEFT.toString(), leftSpeed);
 		IWheel rightWheel = new Wheel(DDWheelID.RIGHT.toString(), rightSpeed);
@@ -48,7 +48,7 @@ public class RobotToWheelStrategyDefault extends RobotToWheelSrategy {
 	 @Override
 	 IWheelCommand elaborate(RobotForwardLeft command) {
 		IWheelSpeed leftSpeed = wheelSpeedDown(toForwardSpeed(command.getSpeed()));
-		IWheelSpeed rightSpeed = wheelSpeedUp(toForwardSpeed(command.getSpeed()));
+		IWheelSpeed rightSpeed = toForwardSpeed(command.getSpeed());
 		IWheel leftWheel = new Wheel(DDWheelID.LEFT.toString(), leftSpeed);
 		IWheel rightWheel = new Wheel(DDWheelID.RIGHT.toString(), rightSpeed);
 		return new WheelCommand(leftWheel, rightWheel);
@@ -83,7 +83,7 @@ public class RobotToWheelStrategyDefault extends RobotToWheelSrategy {
 	 @Override
 	 IWheelCommand elaborate(RobotBackwardLeft command) {
 		IWheelSpeed leftSpeed = wheelSpeedDown(toBackwardSpeed(command.getSpeed()));
-		IWheelSpeed rightSpeed = wheelSpeedUp(toBackwardSpeed((command.getSpeed())));
+		IWheelSpeed rightSpeed = toBackwardSpeed((command.getSpeed()));
 		IWheel leftWheel = new Wheel(DDWheelID.LEFT.toString(), leftSpeed);
 		IWheel rightWheel = new Wheel(DDWheelID.RIGHT.toString(), rightSpeed);
 		return new WheelCommand(leftWheel, rightWheel);
@@ -91,7 +91,7 @@ public class RobotToWheelStrategyDefault extends RobotToWheelSrategy {
 
 	 @Override
 	 IWheelCommand elaborate(RobotBackwardRight command) {
-		IWheelSpeed leftSpeed = wheelSpeedUp(toBackwardSpeed(command.getSpeed()));
+		IWheelSpeed leftSpeed = toBackwardSpeed(command.getSpeed());
 		IWheelSpeed rightSpeed = wheelSpeedDown(toBackwardSpeed(command.getSpeed()));
 		IWheel leftWheel = new Wheel(DDWheelID.LEFT.toString(), leftSpeed);
 		IWheel rightWheel = new Wheel(DDWheelID.RIGHT.toString(), rightSpeed);

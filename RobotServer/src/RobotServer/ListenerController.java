@@ -72,14 +72,14 @@ public class ListenerController {
 		switch (controllerType.valueOf(cntType)){
 		case PID:
 			//System.out.println("PID "+getSpeed(speed).getNumValue()+" "+Boolean.getBoolean(isForward));
-			controller=new PIDLineFollowerController(getSpeed(speed), robot,Boolean.getBoolean(isForward));
+			controller=new PIDLineFollowerController(getSpeed(speed), robot,Boolean.parseBoolean(isForward));
 			((PIDLineFollowerController)controller).configure("costanti.txt");
 			break;
 		case StateBiLine:
-			controller=new StateMachineBiLineFollowerController(getSpeed(speed),robot,Boolean.getBoolean(isForward));
+			controller=new StateMachineBiLineFollowerController(getSpeed(speed),robot,Boolean.parseBoolean(isForward));
 			break;
 		case StateMonoLine:
-			controller=new StateMachineMonoLineFollowerController(getSpeed(speed),robot,Boolean.getBoolean(isForward));
+			controller=new StateMachineMonoLineFollowerController(getSpeed(speed),robot,Boolean.parseBoolean(isForward));
 			break;
 		default:
 			return;	

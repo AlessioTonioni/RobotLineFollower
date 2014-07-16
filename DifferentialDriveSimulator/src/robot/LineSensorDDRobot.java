@@ -48,11 +48,12 @@ public class LineSensorDDRobot extends SimpleDDRobot{
 		boolean newRight=false;
 		Checker current=workingZone.getChecker(leftLineSensorPosition);
 		if(current==Checker.line){
-			System.out.println("I'm on a fucking line!");
+			System.out.println("left line detected");
 			newLeft=true;
 		}
 		current=workingZone.getChecker(rightLineSensorPosition);
 		if(current==Checker.line){
+			System.out.println("right line detected");
 			newRight=true;
 		}
 		callNotify(newLeft,newRight);

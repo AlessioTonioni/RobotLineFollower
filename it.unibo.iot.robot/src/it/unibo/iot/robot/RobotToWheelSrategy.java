@@ -83,7 +83,7 @@ public abstract class RobotToWheelSrategy implements IRobotToWhellStarategy {
 			wsv_down=WheelSpeedValue.FSETTABLE.setValue(wsv.getValue()/2 -5);
 			break;
 		case RHIGH: case RMEDIUM: case RLOW:
-			 wsv_down = WheelSpeedValue.RSETTABLE.setValue(wsv.getValue()/2 -5);
+			 wsv_down = WheelSpeedValue.RSETTABLE.setValue(wsv.getValue()/2 +5);
 			break;
 		default:
 			wsv_down = WheelSpeedValue.ZERO;

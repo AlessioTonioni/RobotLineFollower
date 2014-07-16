@@ -1,5 +1,7 @@
 package main;
 
+import genetic.DoubleCirconference;
+
 import java.io.IOException;
 
 import controller.SimulationController;
@@ -21,12 +23,12 @@ public class simpleMain {
 		
 		System.out.println(robot.getHeading()+" "+robot.getRobotPosition().getX()+" "+robot.getRobotPosition().getY());
 		
-		robot.update_ddPercentage(1, 1, 1.17);
+		robot.update_ddPercentage(0.5, 0, 1.17);
 		
-		System.out.println(robot.getHeading()+" "+robot.getRobotPosition().getX()+" "+robot.getRobotPosition().getY());
-		*/
-	
+		System.out.println(robot.getHeading()+" "+robot.getRobotPosition().getX()+" "+robot.getRobotPosition().getY());*/
+		DoubleCirconference c=new DoubleCirconference(145,0,125,175);
 		SimulationController sim=new SimulationController("mappa.jpg");
-		sim.startSimulation();
+		sim.setScoreCalculator(c);
+		System.out.println(sim.startSimulation(500));
 	}
 }

@@ -1,25 +1,21 @@
 package controller;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import lineFollower.MockPIDController;
-import it.unibo.iot.models.motorCommands.IMotorSpeed;
-import it.unibo.iot.models.motorCommands.MotorSpeed;
-import it.unibo.iot.models.motorCommands.MotorState;
+import genetic.IScoreCalculator;
 import it.unibo.iot.models.robotCommands.RobotSpeedValue;
 import it.unibo.iot.models.wheelCommands.IWheel;
 import it.unibo.iot.models.wheelCommands.IWheelCommand;
 import it.unibo.iot.models.wheelCommands.WheelSpeedValue;
 import it.unibo.iot.robot.DDWheelID;
-import it.unibo.iot.robot.IRobot;
 import it.unibo.lineFollower.ILineFollowerController;
 import robot.IDDRobot;
 import robot.LineSensorDDRobot;
 import robot.MockRobot;
 import space.IMap;
-import space.IPoint;
 import space.ImageLoader;
-import space.PointFactory;
 import space.twoDMap;
 import space.twoDPoint;
 
@@ -29,6 +25,7 @@ public class SimulationController {
 	private MockRobot puppet;
 	private ILineFollowerController controller;
 	private IMap map;
+	private IScoreCalculator calculator;
 	
 	public SimulationController(String mapFileName) throws IOException{
 		simulatedTimeMillis=0;
@@ -38,16 +35,20 @@ public class SimulationController {
 		controller=createController();
 	}
 	
+	public void setScoreCalculator(IScoreCalculator calculator){
+		this.calculator=calculator;
+	}
+	
 	public IMap createMap(String mapFileName) throws IOException{
 		return new twoDMap(ImageLoader.getMap(ImageLoader.loadImage(mapFileName)));
 	}
 	
-	public IDDRobot createSimulatedRobot(){
+	public IDDRobot createSimulatedRobot(){  //robot simulato vero e proprio
 		twoDPoint start=new twoDPoint(0,0);
-		twoDPoint leftS=new twoDPoint(-1,1);
-		twoDPoint rightS=new twoDPoint(1,1);
+		twoDPoint leftS=new twoDPoint(-5,2);
+		twoDPoint rightS=new twoDPoint(5,2);
 		
-		double heading=-3*Math.PI/4;
+		double heading=Math.PI/2;
 		double wheelRadius=2.5;
 		double wheelDistance=10;
 		double wheelAngularSpeed=10.13;
@@ -58,21 +59,34 @@ public class SimulationController {
 		
 	}
 	
-	public MockRobot createPuppetRobot(){
+	public MockRobot createPuppetRobot(){ //robot in cui il controller mette i comandi da eseguire
 		return new MockRobot();
 	}
 	
-	public ILineFollowerController createController(){
-		return new MockPIDController(RobotSpeedValue.ROBOT_SPEED_LOW, puppet, false);
+	public ILineFollowerController createController() throws IOException{
+		MockPIDController m= new MockPIDController(RobotSpeedValue.ROBOT_SPEED_LOW, puppet, true);
+		m.setObserver((LineSensorDDRobot)simulatedRobot);
+		m.configure("costanti.txt");
+		return m;
 	}
 	
-	public void startSimulation(){
+	public int startSimulation(int numberOfSteps) throws IOException{
+		int score=0;
+		if(calculator==null){
+			throw new IOException("Manca il calcola punti");
+		}
 		int lastTime=0;
-		while(true){
-			simulatedTimeMillis+=50;  //incremento il tempo simulato
+		InputStreamReader in=new InputStreamReader(System.in);
+		while(numberOfSteps>0){
+			//incremento il tempo simulato
+			simulatedTimeMillis+=50;  
+			
+			//il controller calcola il comando da mettere in esecuzione in seguito
 			controller.doJob();
 			
-			IWheelCommand wheelCommand=puppet.getCurrentCmd();	//ottengo il comando da eseguire
+			//ottengo il comando da eseguire
+			IWheelCommand wheelCommand=puppet.getCurrentCmd();	
+			
 			
 			IWheel leftWheel = wheelCommand.getWheelByID(DDWheelID.LEFT.toString());
 			double leftSpeedPercentage = toMotorSpeed(leftWheel.getSpeed().getSpeed());
@@ -81,12 +95,23 @@ public class SimulationController {
 			double rightSpeedPercentage = toMotorSpeed(rightWheel.getSpeed().getSpeed());
 			
 			//eseguo per un intervallo di tempo
-			simulatedRobot.update_ddPercentage(rightSpeedPercentage, leftSpeedPercentage, (simulatedTimeMillis-lastTime)*0.001);
-			//il controller calcola il comando da mettere in esecuzione in seguito
-			
-			System.out.println(simulatedRobot.getRobotPosition().getX()+" "+simulatedRobot.getRobotPosition().getY());
+			try{
+				simulatedRobot.update_ddPercentage(rightSpeedPercentage, leftSpeedPercentage, (simulatedTimeMillis-lastTime)*0.001);
+			}catch(Exception e){
+				System.out.println("Robot Fuori Mappa");
+				return 0;
+			}
 			lastTime=simulatedTimeMillis;
+			
+			System.out.println("Posizione: x:"+simulatedRobot.getRobotPosition().getX()+" y:"+simulatedRobot.getRobotPosition().getY());
+			System.out.println("Comando eseguito: l:"+leftSpeedPercentage+" r:"+rightSpeedPercentage);
+			//System.out.println("Continua?");
+			//in.read();
+			
+			score+=calculator.calculateScore(simulatedRobot.getRobotPosition());
+			numberOfSteps--;
 		}
+		return score;
 	}
 
 	private double toMotorSpeed(WheelSpeedValue speed) {
