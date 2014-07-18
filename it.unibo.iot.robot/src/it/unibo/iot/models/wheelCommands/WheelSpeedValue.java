@@ -14,6 +14,10 @@ public enum WheelSpeedValue {
 	}
 
 	public WheelSpeedValue setValue(int value) {
+		if(value>100)
+			value=100;
+		if(value<-100)
+			value=-100;
 		Value = value;
 		return this;
 	}

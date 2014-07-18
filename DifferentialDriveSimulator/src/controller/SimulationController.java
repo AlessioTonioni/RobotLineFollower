@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import lineFollower.MockPIDController;
-import genetic.IScoreCalculator;
 import it.unibo.iot.models.robotCommands.RobotSpeedValue;
 import it.unibo.iot.models.wheelCommands.IWheel;
 import it.unibo.iot.models.wheelCommands.IWheelCommand;
@@ -14,6 +13,8 @@ import it.unibo.lineFollower.ILineFollowerController;
 import robot.IDDRobot;
 import robot.LineSensorDDRobot;
 import robot.MockRobot;
+import robotPositionToScore.DoubleCirconference;
+import robotPositionToScore.IRobotPositionToScore;
 import space.IMap;
 import space.ImageLoader;
 import space.twoDMap;
@@ -23,9 +24,10 @@ public class SimulationController {
 	private int simulatedTimeMillis;
 	private IDDRobot simulatedRobot;
 	private MockRobot puppet;
+	private MockPIDController m;
 	private ILineFollowerController controller;
 	private IMap map;
-	private IScoreCalculator calculator;
+	private IRobotPositionToScore calculator;
 	
 	public SimulationController(String mapFileName) throws IOException{
 		simulatedTimeMillis=0;
@@ -35,7 +37,7 @@ public class SimulationController {
 		controller=createController();
 	}
 	
-	public void setScoreCalculator(IScoreCalculator calculator){
+	public void setScoreCalculator(IRobotPositionToScore calculator){
 		this.calculator=calculator;
 	}
 	
@@ -64,19 +66,28 @@ public class SimulationController {
 	}
 	
 	public ILineFollowerController createController() throws IOException{
-		MockPIDController m= new MockPIDController(RobotSpeedValue.ROBOT_SPEED_LOW, puppet, true);
+		m= new MockPIDController(RobotSpeedValue.ROBOT_SPEED_LOW, puppet, true);
 		m.setObserver((LineSensorDDRobot)simulatedRobot);
 		m.configure("costanti.txt");
 		return m;
 	}
 	
-	public int startSimulation(int numberOfSteps) throws IOException{
+	public void changeControllerCostants(int kProportional, int kDerivative, int kIntegral){
+		m.configure(kProportional, kDerivative, kIntegral);
+	}
+	
+	public void reset(){
+		simulatedTimeMillis=0;
+		simulatedRobot.setPosition(new twoDPoint(0,0),Math.PI/2);
+	}
+	
+	public int startSimulation(int numberOfSteps,boolean verbose) throws IOException {
 		int score=0;
 		if(calculator==null){
 			throw new IOException("Manca il calcola punti");
 		}
 		int lastTime=0;
-		InputStreamReader in=new InputStreamReader(System.in);
+		//InputStreamReader in=new InputStreamReader(System.in);
 		while(numberOfSteps>0){
 			//incremento il tempo simulato
 			simulatedTimeMillis+=50;  
@@ -94,6 +105,7 @@ public class SimulationController {
 			IWheel rightWheel = wheelCommand.getWheelByID(DDWheelID.RIGHT.toString());
 			double rightSpeedPercentage = toMotorSpeed(rightWheel.getSpeed().getSpeed());
 			
+			
 			//eseguo per un intervallo di tempo
 			try{
 				simulatedRobot.update_ddPercentage(rightSpeedPercentage, leftSpeedPercentage, (simulatedTimeMillis-lastTime)*0.001);
@@ -103,8 +115,10 @@ public class SimulationController {
 			}
 			lastTime=simulatedTimeMillis;
 			
-			System.out.println("Posizione: x:"+simulatedRobot.getRobotPosition().getX()+" y:"+simulatedRobot.getRobotPosition().getY());
-			System.out.println("Comando eseguito: l:"+leftSpeedPercentage+" r:"+rightSpeedPercentage);
+			if(verbose){
+				System.out.println("Posizione: x:"+simulatedRobot.getRobotPosition().getX()+" y:"+simulatedRobot.getRobotPosition().getY());
+				System.out.println("Comando eseguito: l:"+leftSpeedPercentage+" r:"+rightSpeedPercentage);
+			}
 			//System.out.println("Continua?");
 			//in.read();
 			

@@ -1,12 +1,11 @@
 package main;
 
-import genetic.DoubleCirconference;
-
 import java.io.IOException;
 
 import controller.SimulationController;
 import robot.IDDRobot;
 import robot.SimpleDDRobot;
+import robotPositionToScore.DoubleCirconference;
 import space.twoDPoint;
 
 public class simpleMain {
@@ -29,6 +28,6 @@ public class simpleMain {
 		DoubleCirconference c=new DoubleCirconference(145,0,125,175);
 		SimulationController sim=new SimulationController("mappa.jpg");
 		sim.setScoreCalculator(c);
-		System.out.println(sim.startSimulation(500));
+		System.out.println(sim.startSimulation(4000,true));
 	}
 }

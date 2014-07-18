@@ -7,4 +7,5 @@ public interface ILineFollowerController extends Runnable{
 	void setSpeed(RobotSpeedValue newSpeed);
 	void doJob();
 	void terminate();
+	
 }

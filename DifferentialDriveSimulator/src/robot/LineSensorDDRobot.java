@@ -48,12 +48,12 @@ public class LineSensorDDRobot extends SimpleDDRobot{
 		boolean newRight=false;
 		Checker current=workingZone.getChecker(leftLineSensorPosition);
 		if(current==Checker.line){
-			System.out.println("left line detected");
+			//System.out.println("left line detected");
 			newLeft=true;
 		}
 		current=workingZone.getChecker(rightLineSensorPosition);
 		if(current==Checker.line){
-			System.out.println("right line detected");
+			//System.out.println("right line detected");
 			newRight=true;
 		}
 		callNotify(newLeft,newRight);
@@ -90,6 +90,12 @@ public class LineSensorDDRobot extends SimpleDDRobot{
 		
 	}
 	
+	@Override
+	protected void resetComponentPosition(){
+		updateComponentPosition();
+		leftOnLine=false;
+		rightOnLine=false;
+	}
 	
 
 

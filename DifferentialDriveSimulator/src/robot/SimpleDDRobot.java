@@ -25,7 +25,7 @@ public class SimpleDDRobot implements IDDRobot {
 
 	protected void updateComponentPosition() {
 		this.leftWheelPosition=PointFactory.getInstance().getPoint(robotPosition.getX()-wheelDistance/2,robotPosition.getY());
-		this.leftWheelPosition=PointFactory.getInstance().getPoint(robotPosition.getX()+wheelDistance/2,robotPosition.getY());
+		this.rightWheelPosition=PointFactory.getInstance().getPoint(robotPosition.getX()+wheelDistance/2,robotPosition.getY());
 	}
 
 	@Override
@@ -68,6 +68,18 @@ public class SimpleDDRobot implements IDDRobot {
 	@Override
 	public void update_ddPercentage(double lPercentage, double rPercentage, double dt) {
 		update_ddr(lPercentage*fullSpeed,rPercentage*fullSpeed, dt);		
+	}
+
+	@Override
+	public void setPosition(IPoint position,double heading) {
+		this.robotPosition = position;
+		this.heading=heading;
+		resetComponentPosition();
+		
+	}
+
+	protected void resetComponentPosition() {
+		updateComponentPosition();	
 	}
 
 }

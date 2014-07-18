@@ -5,18 +5,20 @@ import space.IPoint;
 
 public interface IDDRobot {
 
-	public abstract IPoint getLeftWheelPosition();
+	IPoint getLeftWheelPosition();
 
-	public abstract IPoint getRightWheelPosition();
+	IPoint getRightWheelPosition();
 
-	public abstract IPoint getRobotPosition();
+	IPoint getRobotPosition();
 
-	public abstract double getHeading();
+	double getHeading();
 
-	public abstract void update_ddr(double vr, double vl, double dt);
+	void update_ddr(double vr, double vl, double dt);
 
-	public abstract void update_unicycle(double v, double omega, double dt);
+	void update_unicycle(double v, double omega, double dt);
 	
-	public abstract void update_ddPercentage(double rPercentage,double lPercentage, double dt);
+	void update_ddPercentage(double rPercentage,double lPercentage, double dt);
+	
+	void setPosition(IPoint position,double heading);
 
 }

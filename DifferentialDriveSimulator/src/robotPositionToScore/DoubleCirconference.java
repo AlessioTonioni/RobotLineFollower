@@ -1,14 +1,16 @@
-package genetic;
+package robotPositionToScore;
 
 import space.IPoint;
 
-public class DoubleCirconference implements IScoreCalculator {
+public class DoubleCirconference  implements IRobotPositionToScore{
 	public double centerX;
 	public double centerY;
 	
 	public double outerRadiusSquare;
 	public double innerRadiusSquare;
 	
+	public double lastPositionX=0;
+	public double lastPositionY=0;
 	
 	public DoubleCirconference(double centerX, double centerY, double innerRadius, double outerRadius){
 		this.centerX=centerX;
@@ -18,17 +20,24 @@ public class DoubleCirconference implements IScoreCalculator {
 		innerRadiusSquare=innerRadius*innerRadius;
 	}
 	
-	@Override
 	public int calculateScore(IPoint robotPosition) {
+		int score=0;
 		double robotX=robotPosition.getX();
 		double robotY=robotPosition.getY();
 		
-		if(isInsideOuterCirconference(robotX, robotY) && isOutFromInnerCirconference(robotX, robotY))
-			return 1;
-		else
-			return 0;
+		if(isInsideOuterCirconference(robotX, robotY) && isOutFromInnerCirconference(robotX, robotY) 
+				&& hasMoved(robotPosition))
+			score=1;
+		lastPositionX=robotPosition.getX();
+		lastPositionY=robotPosition.getY();
+		return score;
 	}
-	
+
+
+	private boolean hasMoved(IPoint robotPosition) {
+		return lastPositionX!=robotPosition.getX() || lastPositionY!=robotPosition.getY();
+	}
+
 	private boolean isInsideOuterCirconference(double x, double y){
 		return Math.pow(x-centerX, 2)+Math.pow(y-centerY, 2)<=outerRadiusSquare;
 	}

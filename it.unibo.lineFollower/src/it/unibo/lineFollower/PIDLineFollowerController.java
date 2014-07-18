@@ -37,18 +37,19 @@ public class PIDLineFollowerController implements ILineFollowerController {
 	protected int derivative=0;
 	protected int lastError=0;
 
-	protected int kProportional=100;
-	protected int kDerivative=1;
-	protected int kIntegral=1;
+	protected int kProportional;
+	protected int kDerivative;
+	protected int kIntegral;
 
 	private volatile boolean running = true;
-	
+	private boolean configured=false;
+
 	public PIDLineFollowerController(RobotSpeedValue defaultSpeed, IDifferentialDriveRobot robot, boolean isForward){
 		this.robot=robot;
 		this.speed=defaultSpeed;
 		this.isForward=isForward;
 	}
-	
+
 	public void configure(String filename) throws IOException{
 		File f=new File(filename);
 		if(f.exists()){
@@ -59,16 +60,25 @@ public class PIDLineFollowerController implements ILineFollowerController {
 			kProportional=Integer.parseInt(constant[0]);
 			kDerivative=Integer.parseInt(constant[1]);
 			kIntegral=Integer.parseInt(constant[2]);
+			configured=true;
 		} else {
 			System.out.println("File di configurazione non trovato!");
 			System.exit(0);
 		}
 	}
 
+	public void configure(int kProportional, int kDerivative, int kIntegral){
+		error=0;
+		this.kProportional=kProportional;
+		this.kDerivative=kDerivative;
+		this.kIntegral=kIntegral;
+		configured=true;
+	}
+
 	public void terminate() {
 		running = false;
 	}
-	
+
 	public void updateError(IDetection detection){
 		switch (detection.getDirection()){
 		case EAST:
@@ -107,7 +117,7 @@ public class PIDLineFollowerController implements ILineFollowerController {
 		IWheelSpeed rightSpeed;
 		IWheelSpeed leftSpeed;
 
-		System.out.println("errore: "+error+" integrale:"+integral+" derivativo:"+derivative+" turn calcolata:" +turn);
+		//System.out.println("errore: "+error+" integrale:"+integral+" derivativo:"+derivative+" turn calcolata:" +turn);
 
 		lastError=error;
 		if(isForward){
@@ -132,29 +142,34 @@ public class PIDLineFollowerController implements ILineFollowerController {
 
 	@Override
 	public void run() {
-		IConfiguration conf = Configurator.getConfiguration();
-		final PIDLineFollowerController myself=this;
+		if(configured){
+			IConfiguration conf = Configurator.getConfiguration();
+			final PIDLineFollowerController myself=this;
 
-		IDetectorObserver obsDetectorObserver = new IDetectorObserver() {
+			IDetectorObserver obsDetectorObserver = new IDetectorObserver() {
 
-			@Override
-			public void notify(IDetection detection) {
-				myself.updateError(detection);
+				@Override
+				public void notify(IDetection detection) {
+					myself.updateError(detection);
+				}
+			};
+			IDetectorObservable [] detectorObservables = conf.getLineDetectorObservables();
+			for (IDetectorObservable iDetectorObservable : detectorObservables) {
+				iDetectorObservable.addObserver(obsDetectorObserver);
 			}
-		};
-		IDetectorObservable [] detectorObservables = conf.getLineDetectorObservables();
-		for (IDetectorObservable iDetectorObservable : detectorObservables) {
-			iDetectorObservable.addObserver(obsDetectorObserver);
-		}
 
-		System.out.println("ReadyToStart!");
-		while(running){  
-			try{
-				robot.execute(calculateNewCommand());
-				Thread.sleep(16); //60Hz 
-			}catch(Exception e){
-				continue;
+			System.out.println("ReadyToStart!");
+			while(running){  
+				try{
+					robot.execute(calculateNewCommand());
+					Thread.sleep(16); //60Hz 
+				}catch(Exception e){
+					continue;
+				}
 			}
+		} else {
+			System.out.println("Controller not yet configured");
+			return;
 		}
 
 	}
