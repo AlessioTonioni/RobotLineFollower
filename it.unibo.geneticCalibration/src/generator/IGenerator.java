@@ -3,7 +3,6 @@ package generator;
 import java.util.List;
 
 import member.IPopulationMember;
-import member.PIDPopulationMember;
 
 public interface IGenerator {
 	

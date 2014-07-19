@@ -1,15 +1,11 @@
 package main;
 
-import java.io.IOException;
 
 import controller.SimulationController;
-import robot.IDDRobot;
-import robot.SimpleDDRobot;
 import robotPositionToScore.DoubleCirconference;
-import space.twoDPoint;
 
 public class simpleMain {
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws Exception{
 		//Everything in cm except for wheel velocity in rad/s and heading in rad
 		
 		/*twoDPoint start=new twoDPoint(0,0);
@@ -26,8 +22,8 @@ public class simpleMain {
 		
 		System.out.println(robot.getHeading()+" "+robot.getRobotPosition().getX()+" "+robot.getRobotPosition().getY());*/
 		DoubleCirconference c=new DoubleCirconference(145,0,125,175);
-		SimulationController sim=new SimulationController("mappa.jpg");
+		SimulationController sim=new SimulationController("mappa.jpg",50);
 		sim.setScoreCalculator(c);
-		System.out.println(sim.startSimulation(4000,true));
+		System.out.println(sim.startSimulation(4000,false,50));
 	}
 }

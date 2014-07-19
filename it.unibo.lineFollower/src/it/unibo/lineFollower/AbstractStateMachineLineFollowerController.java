@@ -52,8 +52,8 @@ public abstract class AbstractStateMachineLineFollowerController implements ILin
 			moveRight=factory.getCommand("FORWARDRIGHT");
 			defaultCommand=factory.getCommand("FORWARD");
 		} else {
-			moveLeft=factory.getCommand("BACKWARDRIGHT");
-			moveRight=factory.getCommand("BACKWARDLEFT");
+			moveLeft=factory.getCommand("BACKWARDLEFT");
+			moveRight=factory.getCommand("BACKWARDRIGHT");
 			defaultCommand=factory.getCommand("BACKWARD");
 		}
 		stopCommand=factory.getCommand("STOP");

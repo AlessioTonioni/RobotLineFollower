@@ -1,7 +1,5 @@
 package fitnessCalculator;
 
-import java.io.IOException;
-
 import controller.SimulationController;
 import robotPositionToScore.DoubleCirconference;
 import member.IPopulationMember;
@@ -9,13 +7,14 @@ import member.PIDPopulationMember;
 
 public class PIDSimulatorScoreCalculator implements IScoreCalculator{
 
-	private int numberOfStep=1000;
+	private int numberOfStep=0;
 	private DoubleCirconference calculator;
 	private SimulationController sim;
+	private int millisForStep;
 
-	public PIDSimulatorScoreCalculator(int simulationStep) throws IOException{
+	public PIDSimulatorScoreCalculator(int simulationStep,int millisForStep,int defaultSpeed) throws Exception{
 		calculator=new DoubleCirconference(145,0,125,175);
-		sim=new SimulationController("mappa.jpg");
+		sim=new SimulationController("mappa.jpg",defaultSpeed);
 		sim.setScoreCalculator(calculator);
 		numberOfStep=simulationStep;
 	}
@@ -27,7 +26,8 @@ public class PIDSimulatorScoreCalculator implements IScoreCalculator{
 			if(!member.isFitnessSetted()){
 				sim.reset();
 				sim.changeControllerCostants(m.getkProportional(), m.getkDerivative(), m.getkIntegral());
-				member.setFitness(sim.startSimulation(numberOfStep, false));
+				int score=sim.startSimulation(numberOfStep, false,millisForStep);
+				member.setFitness(score);
 			}
 		}catch(Exception e){
 			e.printStackTrace();

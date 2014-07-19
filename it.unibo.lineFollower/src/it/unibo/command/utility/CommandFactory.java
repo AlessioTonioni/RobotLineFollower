@@ -1,7 +1,5 @@
 package it.unibo.command.utility;
 
-import java.util.HashMap;
-
 import it.unibo.iot.models.robotCommands.IRobotCommand;
 import it.unibo.iot.models.robotCommands.IRobotSpeed;
 import it.unibo.iot.models.robotCommands.RobotBackward;

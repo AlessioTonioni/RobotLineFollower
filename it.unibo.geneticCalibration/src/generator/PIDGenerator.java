@@ -22,9 +22,9 @@ public class PIDGenerator extends AbstractGenerator{
 		int mutation2=randInt(-100,100);
 		int mutation3=randInt(-100,100);
 		
-		int newKProportional=s.getkProportional()+mutation1;
-		int newKIntegral=s.getkIntegral()+mutation2;
-		int newKDerivative=s.getkDerivative()+mutation3;
+		int newKProportional=Math.abs(s.getkProportional()+mutation1);
+		int newKIntegral=Math.abs(s.getkIntegral()+mutation2);
+		int newKDerivative=Math.abs(s.getkDerivative()+mutation3);
 		
 		return new PIDPopulationMember(newKProportional, newKDerivative, newKIntegral);
 	}
@@ -63,10 +63,6 @@ public class PIDGenerator extends AbstractGenerator{
 	
 	private int randInt(int min, int max) {
 	    return rand.nextInt((max - min) + 1) + min;
-	}
-	
-	private float randFloat(float min, float max){
-		return rand.nextFloat()*(max-min) + min;
 	}
 
 	@Override

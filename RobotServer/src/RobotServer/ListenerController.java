@@ -48,9 +48,9 @@ public class ListenerController {
 			int dim=cmdStream.read();
 			//cmdStream.read(); cmdStream.read(); cmdStream.read();
 			byte[] cmd=new byte[dim];
-			System.out.println(dim);
+			//System.out.println(dim);
 			int readed=cmdStream.read(cmd);
-			System.out.println(readed);
+			//System.out.println(readed);
 			String cmdToExecute=new String(cmd,"UTF-8");
 			System.out.println(cmdToExecute);
 			StringTokenizer cutter=new StringTokenizer(cmdToExecute);

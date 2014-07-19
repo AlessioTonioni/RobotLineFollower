@@ -46,15 +46,13 @@ public class GeneticEvolutionController{
 			for(IPopulationMember p:generation){
 				scoreCalculator.setFitness(p);
 			}
-			doLog(generation,i,writer);
 			Collections.sort(generation);
-			Collections.reverse(generation);
+			doLog(generation,i,writer);	
 			fittest=generation.get(0);
-			
-			writer.write("Individuo migliore iterazione "+i+": punteggio="+fittest.getFitness()+"\n");
 			
 			generation=generator.getNewGeneration(generation);
 		}
+		writer.close();
 		return fittest;
 	}
 
@@ -67,6 +65,7 @@ public class GeneticEvolutionController{
 			writer.write("membro della popolazione kP:"+m.getkProportional()+" kD:"+m.getkDerivative()+" kI:"+m.getkIntegral());
 			writer.write(" score:"+m.getFitness()+"\n");
 		}
+		writer.write("Individuo migliore iterazione "+i+": punteggio="+generation.get(0).getFitness()+"\n");
 		
 		
 	}

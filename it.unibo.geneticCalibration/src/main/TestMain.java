@@ -1,7 +1,6 @@
 package main;
 
 import java.io.File;
-import java.io.IOException;
 
 import member.PIDPopulationMember;
 import controller.GeneticEvolutionController;
@@ -11,24 +10,28 @@ import generator.IGenerator;
 import generator.PIDGenerator;
 
 public class TestMain {
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws Exception{
 		int numberOfSimulatorSteps=0;
 		int numberOfGeneticIteration=0;
 		int generationSize=0;
+		int millisForStep=0;
+		int defaultSpeed=0;
 		File logFile=null;
 		
-		if(args.length!=4)printUsage();
+		if(args.length!=5)printUsage();
 		try{
 			numberOfGeneticIteration=Integer.parseInt(args[0]);
-			numberOfSimulatorSteps=Integer.parseInt(args[1]);
-			generationSize=Integer.parseInt(args[2]);
-			logFile=new File(args[3]);
+			generationSize=Integer.parseInt(args[1]);
+			numberOfSimulatorSteps=Integer.parseInt(args[2]);
+			millisForStep=Integer.parseInt(args[3]);
+			defaultSpeed=Integer.parseInt(args[4]);
+			logFile=new File(args[5]);
 			if(!logFile.exists()) logFile.createNewFile();
 		}catch(Exception e){
 			printUsage();
 		}
 		
-		IScoreCalculator scoreCalculator=new PIDSimulatorScoreCalculator(numberOfSimulatorSteps);
+		IScoreCalculator scoreCalculator=new PIDSimulatorScoreCalculator(numberOfSimulatorSteps,millisForStep,defaultSpeed);
 		IGenerator generator= new PIDGenerator();
 		GeneticEvolutionController controller=new GeneticEvolutionController(scoreCalculator, generator);
 		
@@ -36,12 +39,14 @@ public class TestMain {
 		
 		System.out.println("Computazione completata!");
 		System.out.println("Individuo migliore: punteggio="+result.getFitness()+" kProp:"+
-							result.getkProportional()+" kInt"+result.getkIntegral()+" kDeriv:"+result.getkDerivative());
+							result.getkProportional()+" kDeriv:"+result.getkDerivative()+" kInt:"+result.getkIntegral());
 		
+		scoreCalculator.setFitness(result);
+		System.out.println("Controprova:"+result.getFitness());
 	}
 	
 	private static void printUsage(){
-		String usage="TestMain numberOfGeneticIterations numberOFSimulatorSteps populationSize logFile";
+		String usage="USAGE: PIDGeneticCalibrator  numberOfGeneticIterations populationSize numberOfSimulatorSteps millisForStep defaultSpeed logFile";
 		System.out.println(usage);
 		System.exit(0);
 	}

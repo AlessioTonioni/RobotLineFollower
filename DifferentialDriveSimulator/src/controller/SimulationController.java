@@ -1,8 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
-
 import lineFollower.MockPIDController;
 import it.unibo.iot.models.robotCommands.RobotSpeedValue;
 import it.unibo.iot.models.wheelCommands.IWheel;
@@ -13,7 +11,6 @@ import it.unibo.lineFollower.ILineFollowerController;
 import robot.IDDRobot;
 import robot.LineSensorDDRobot;
 import robot.MockRobot;
-import robotPositionToScore.DoubleCirconference;
 import robotPositionToScore.IRobotPositionToScore;
 import space.IMap;
 import space.ImageLoader;
@@ -29,12 +26,12 @@ public class SimulationController {
 	private IMap map;
 	private IRobotPositionToScore calculator;
 	
-	public SimulationController(String mapFileName) throws IOException{
+	public SimulationController(String mapFileName, int defaultSpeed) throws Exception{
 		simulatedTimeMillis=0;
 		map=createMap(mapFileName);
 		simulatedRobot=createSimulatedRobot();
 		puppet=createPuppetRobot();
-		controller=createController();
+		controller=createController(defaultSpeed);
 	}
 	
 	public void setScoreCalculator(IRobotPositionToScore calculator){
@@ -46,14 +43,14 @@ public class SimulationController {
 	}
 	
 	public IDDRobot createSimulatedRobot(){  //robot simulato vero e proprio
-		twoDPoint start=new twoDPoint(0,0);
-		twoDPoint leftS=new twoDPoint(-5,2);
-		twoDPoint rightS=new twoDPoint(5,2);
+		twoDPoint start=new twoDPoint(0,0);  //centro dell'asse delle ruote
+		twoDPoint leftS=new twoDPoint(-2,3); //sensore di linea sinistro
+		twoDPoint rightS=new twoDPoint(2,3); //sensore di linea destro
 		
-		double heading=Math.PI/2;
-		double wheelRadius=2.5;
-		double wheelDistance=10;
-		double wheelAngularSpeed=10.13;
+		double heading=Math.PI/2;   //orientamento
+		double wheelRadius=2.5;     //raggio delle ruote
+		double wheelDistance=10.5;  //lunghezza dell'asse delle ruote
+		double wheelAngularSpeed=10.13;  //velocità angolare massima di rotazione delle ruote
 		
 		
 		return new LineSensorDDRobot(start, heading, wheelRadius, wheelDistance, 
@@ -65,10 +62,11 @@ public class SimulationController {
 		return new MockRobot();
 	}
 	
-	public ILineFollowerController createController() throws IOException{
-		m= new MockPIDController(RobotSpeedValue.ROBOT_SPEED_LOW, puppet, true);
+	public ILineFollowerController createController(int defaultSpeed) throws Exception{
+		if(defaultSpeed<0 || defaultSpeed>100) throw new Exception("Velocità del controller non valida");
+		m= new MockPIDController(RobotSpeedValue.LIBERA.setNumValue(defaultSpeed), puppet, true);
 		m.setObserver((LineSensorDDRobot)simulatedRobot);
-		m.configure("costanti.txt");
+		//m.configure("costanti.txt");
 		return m;
 	}
 	
@@ -81,7 +79,7 @@ public class SimulationController {
 		simulatedRobot.setPosition(new twoDPoint(0,0),Math.PI/2);
 	}
 	
-	public int startSimulation(int numberOfSteps,boolean verbose) throws IOException {
+	public int startSimulation(int numberOfSteps,boolean verbose, int millisForTick) throws IOException {
 		int score=0;
 		if(calculator==null){
 			throw new IOException("Manca il calcola punti");
@@ -90,7 +88,7 @@ public class SimulationController {
 		//InputStreamReader in=new InputStreamReader(System.in);
 		while(numberOfSteps>0){
 			//incremento il tempo simulato
-			simulatedTimeMillis+=50;  
+			simulatedTimeMillis+=millisForTick;  
 			
 			//il controller calcola il comando da mettere in esecuzione in seguito
 			controller.doJob();

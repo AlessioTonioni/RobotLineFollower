@@ -2,7 +2,6 @@ package it.unibo.lineFollower;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -18,9 +17,7 @@ import it.unibo.iot.models.wheelCommands.WheelCommand;
 import it.unibo.iot.models.wheelCommands.WheelSpeed;
 import it.unibo.iot.models.wheelCommands.WheelSpeedValue;
 import it.unibo.iot.robot.DDWheelID;
-import it.unibo.iot.robot.DifferentialDriveRobot;
 import it.unibo.iot.robot.IDifferentialDriveRobot;
-import it.unibo.iot.robot.IRobot;
 import it.unibo.iot.sensors.detector.IDetectorObservable;
 import it.unibo.iot.sensors.detector.IDetectorObserver;
 
@@ -29,6 +26,7 @@ public class PIDLineFollowerController implements ILineFollowerController {
 	protected IDifferentialDriveRobot robot;
 	protected RobotSpeedValue speed;
 	protected boolean isForward;
+	protected int millisSleep;
 
 	protected int error;  
 	//+10_____0_____-10
@@ -60,7 +58,9 @@ public class PIDLineFollowerController implements ILineFollowerController {
 			kProportional=Integer.parseInt(constant[0]);
 			kDerivative=Integer.parseInt(constant[1]);
 			kIntegral=Integer.parseInt(constant[2]);
+			millisSleep=Integer.parseInt(constant[3]);
 			configured=true;
+			reader.close();
 		} else {
 			System.out.println("File di configurazione non trovato!");
 			System.exit(0);
@@ -69,6 +69,9 @@ public class PIDLineFollowerController implements ILineFollowerController {
 
 	public void configure(int kProportional, int kDerivative, int kIntegral){
 		error=0;
+		integral=0;
+		derivative=0;
+		lastError=0;
 		this.kProportional=kProportional;
 		this.kDerivative=kDerivative;
 		this.kIntegral=kIntegral;
@@ -128,6 +131,7 @@ public class PIDLineFollowerController implements ILineFollowerController {
 			leftSpeed=new WheelSpeed(WheelSpeedValue.LWSETTABLE.setValue(-speed.getNumValue()-turn));
 		}
 
+		//System.out.println("lw: "+leftSpeed.getSpeed().getValue()+" rw:"+rightSpeed.getSpeed().getValue());
 		IWheel leftWheel = new Wheel(DDWheelID.LEFT.toString(), leftSpeed);
 		IWheel rightWheel = new Wheel(DDWheelID.RIGHT.toString(), rightSpeed);
 		return new WheelCommand(leftWheel, rightWheel);
@@ -162,7 +166,7 @@ public class PIDLineFollowerController implements ILineFollowerController {
 			while(running){  
 				try{
 					robot.execute(calculateNewCommand());
-					Thread.sleep(16); //60Hz 
+					Thread.sleep(millisSleep);  
 				}catch(Exception e){
 					continue;
 				}

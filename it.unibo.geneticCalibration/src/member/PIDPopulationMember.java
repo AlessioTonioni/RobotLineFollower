@@ -80,7 +80,7 @@ public class PIDPopulationMember implements IPopulationMember {
 
 	@Override
 	public int compareTo(IPopulationMember o) {
-		return Integer.compare(this.getFitness(), o.getFitness());
+		return Integer.compare(this.getFitness(), o.getFitness())*-1;
 	}
 
 
