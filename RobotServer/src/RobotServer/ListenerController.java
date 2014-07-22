@@ -2,6 +2,10 @@ package RobotServer;
 
 import it.unibo.command.utility.CommandFactory;
 import it.unibo.command.utility.CommandType;
+import it.unibo.commandTranslator.DDCommandTranslator;
+import it.unibo.commandTranslator.ICommandTranslator;
+import it.unibo.errorUpdater.IErrorUpdater;
+import it.unibo.errorUpdater.TwoLineSensorErrorUpdater;
 import it.unibo.iot.configuration.IConfiguration;
 import it.unibo.iot.configurator.Configurator;
 import it.unibo.iot.models.robotCommands.IRobotCommand;
@@ -12,6 +16,7 @@ import it.unibo.lineFollower.ILineFollowerController;
 import it.unibo.lineFollower.PIDLineFollowerController;
 import it.unibo.lineFollower.StateMachineBiLineFollowerController;
 import it.unibo.lineFollower.StateMachineMonoLineFollowerController;
+import it.unibo.lineFollowerFinale.PIDLineFollowerControllerFinale;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -80,6 +85,11 @@ public class ListenerController {
 			break;
 		case StateMonoLine:
 			controller=new StateMachineMonoLineFollowerController(getSpeed(speed),robot,Boolean.parseBoolean(isForward));
+			break;
+		case PIDFinale:
+			ICommandTranslator c=new DDCommandTranslator(getSpeed(speed).getNumValue(),Boolean.parseBoolean(isForward));
+			IErrorUpdater e=new TwoLineSensorErrorUpdater();
+			controller=new PIDLineFollowerControllerFinale(robot, e, c);
 			break;
 		default:
 			return;	

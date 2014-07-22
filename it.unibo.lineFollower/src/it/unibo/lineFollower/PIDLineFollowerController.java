@@ -39,8 +39,8 @@ public class PIDLineFollowerController implements ILineFollowerController {
 	protected int kDerivative;
 	protected int kIntegral;
 
-	private volatile boolean running = true;
-	private boolean configured=false;
+	protected volatile boolean running = true;
+	protected boolean configured=false;
 
 	public PIDLineFollowerController(RobotSpeedValue defaultSpeed, IDifferentialDriveRobot robot, boolean isForward){
 		this.robot=robot;
@@ -112,17 +112,20 @@ public class PIDLineFollowerController implements ILineFollowerController {
 		run();
 	}
 
-
-	protected IWheelCommand calculateNewCommand() {
+	protected int calculateTurn(){
 		derivative=error-lastError;
 		integral=(error==0)?0:integral+error;
-		int turn=((kProportional*error)+(kIntegral*integral)+(kDerivative*derivative))/1000;
+		lastError=error;
+		return ((kProportional*error)+(kIntegral*integral)+(kDerivative*derivative))/1000;
+	}
+
+	protected IWheelCommand calculateNewCommand() {
+		int turn=calculateTurn();
 		IWheelSpeed rightSpeed;
 		IWheelSpeed leftSpeed;
 
 		//System.out.println("errore: "+error+" integrale:"+integral+" derivativo:"+derivative+" turn calcolata:" +turn);
 
-		lastError=error;
 		if(isForward){
 			rightSpeed=new WheelSpeed(WheelSpeedValue.RWSETTABLE.setValue(speed.getNumValue()+turn));
 			leftSpeed=new WheelSpeed(WheelSpeedValue.LWSETTABLE.setValue(speed.getNumValue()-turn));

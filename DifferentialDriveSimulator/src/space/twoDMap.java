@@ -1,11 +1,20 @@
 package space;
 
+/**
+ * Two dimensional implementations of an IMap
+ * @author Alessio Tonioni
+ *
+ */
 public class twoDMap implements IMap{
 	private int maxWidth;
 	private int maxHeight;
 	private Checker[][] map;
 	
-	//the map is a square of maxSize side, the origin of the system is in (maxSize/2,maxSize/2)
+	/**
+	 * Create an empty square map of maxSize edge, 
+	 * the center of the coordinates system is in (maxSize/2,maxSize/2).
+	 * @param maxSize dimension of the edge
+	 */
 	public twoDMap(int maxSize){ 
 		this.maxWidth=maxSize;
 		this.maxHeight=maxSize;
@@ -16,6 +25,10 @@ public class twoDMap implements IMap{
 		}
 	}
 	
+	/**
+	 * Create a map from a checker matrix, the center of the coordinates system is in the middle of the matrix.
+	 * @param map
+	 */
 	public twoDMap(Checker[][] map){
 		this.map=map;
 		maxHeight=map[0].length;
@@ -30,6 +43,9 @@ public class twoDMap implements IMap{
 		return maxHeight/2+y;
 	}
 	
+	/**
+	 * Returns the checker at the given position.
+	 */
 	@Override
 	public Checker getChecker(IPoint position) {
 		int xIndex=toWidthIndex((int)position.getX());

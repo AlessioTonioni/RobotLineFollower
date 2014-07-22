@@ -4,8 +4,8 @@ import java.io.File;
 
 import member.PIDPopulationMember;
 import controller.GeneticEvolutionController;
-import fitnessCalculator.IScoreCalculator;
-import fitnessCalculator.PIDSimulatorScoreCalculator;
+import fitnessCalculator.IFitnessCalculator;
+import fitnessCalculator.PIDSimulatorFitnessCalculator;
 import generator.IGenerator;
 import generator.PIDGenerator;
 
@@ -18,7 +18,7 @@ public class TestMain {
 		int defaultSpeed=0;
 		File logFile=null;
 		
-		if(args.length!=5)printUsage();
+		if(args.length!=6)printUsage();
 		try{
 			numberOfGeneticIteration=Integer.parseInt(args[0]);
 			generationSize=Integer.parseInt(args[1]);
@@ -31,7 +31,7 @@ public class TestMain {
 			printUsage();
 		}
 		
-		IScoreCalculator scoreCalculator=new PIDSimulatorScoreCalculator(numberOfSimulatorSteps,millisForStep,defaultSpeed);
+		IFitnessCalculator scoreCalculator=new PIDSimulatorFitnessCalculator(numberOfSimulatorSteps,millisForStep,defaultSpeed);
 		IGenerator generator= new PIDGenerator();
 		GeneticEvolutionController controller=new GeneticEvolutionController(scoreCalculator, generator);
 		

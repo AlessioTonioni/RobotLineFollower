@@ -4,19 +4,33 @@ import controller.SimulationController;
 import robotPositionToScore.DoubleCirconference;
 import member.IPopulationMember;
 import member.PIDPopulationMember;
-
-public class PIDSimulatorScoreCalculator implements IScoreCalculator{
+/**
+ * Implementation of the fitness calculator used to calibrate a PID controller, associate a score to a controller 
+ * simulating their behavior over a fixed number of milliseconds and giving them a score based on how much they are
+ * able to follow a line.
+ * @author Alessio Tonioni
+ *
+ */
+public class PIDSimulatorFitnessCalculator implements IFitnessCalculator{
 
 	private int numberOfStep=0;
 	private DoubleCirconference calculator;
 	private SimulationController sim;
 	private int millisForStep;
 
-	public PIDSimulatorScoreCalculator(int simulationStep,int millisForStep,int defaultSpeed) throws Exception{
+	/**
+	 * Default constructor
+	 * @param simulationStep number of simulated step for each controller
+	 * @param millisForStep milliseconds for each step
+	 * @param defaultSpeed default speed of the controller
+	 * @throws Exception 
+	 */
+	public PIDSimulatorFitnessCalculator(int simulationStep,int millisForStep,int defaultSpeed) throws Exception{
 		calculator=new DoubleCirconference(145,0,125,175);
 		sim=new SimulationController("mappa.jpg",defaultSpeed);
 		sim.setScoreCalculator(calculator);
 		numberOfStep=simulationStep;
+		this.millisForStep=millisForStep;
 	}
 
 	@Override

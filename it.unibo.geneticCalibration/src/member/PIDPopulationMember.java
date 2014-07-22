@@ -1,5 +1,10 @@
 package member;
 
+/**
+ * This individual is described as the 3 constant that caracterize a PID controller.
+ * @author Alessio Tonioni
+ *
+ */
 public class PIDPopulationMember implements IPopulationMember {
 	private int kProportional;
 	private int kDerivative;

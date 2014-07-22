@@ -1,5 +1,10 @@
 package space;
 
+/**
+ * Implementation of an IPoint in a 2d world, the z-value will always be 0.
+ * @author Alessio Tonioni
+ *
+ */
 public class twoDPoint implements IPoint {
 	private double x;
 	private double y;

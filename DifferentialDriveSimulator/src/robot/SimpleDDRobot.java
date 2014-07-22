@@ -2,7 +2,11 @@ package robot;
 
 import space.IPoint;
 import space.PointFactory;
-
+/**
+ * Simple simulated differential drive robot
+ * @author Alessio Tonioni
+ *
+ */
 public class SimpleDDRobot implements IDDRobot {
 
 	protected IPoint leftWheelPosition; 	//position of the left wheel in cm
@@ -12,7 +16,14 @@ public class SimpleDDRobot implements IDDRobot {
 	private double radius;          		//radius of the wheels in cm
 	private double wheelDistance;         	//distance between wheels in cm
 	private double fullSpeed;				//max speed foreach wheel in rad/s
-
+	/**
+	 * default constructor
+	 * @param robotPosition: starting center of the wheel axis position
+	 * @param heading: robot headings in radiants 
+	 * @param radius: wheel radius in cm
+	 * @param wheelDistance: wheel axis length in cm
+	 * @param maxSpeed: max angular speed of the wheel
+	 */
 	public SimpleDDRobot(IPoint robotPosition, double heading, double radius, double wheelDistance, double maxSpeed) {
 		super();
 		this.robotPosition = robotPosition;

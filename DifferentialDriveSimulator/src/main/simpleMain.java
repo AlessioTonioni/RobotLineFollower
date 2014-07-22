@@ -24,6 +24,6 @@ public class simpleMain {
 		DoubleCirconference c=new DoubleCirconference(145,0,125,175);
 		SimulationController sim=new SimulationController("mappa.jpg",50);
 		sim.setScoreCalculator(c);
-		System.out.println(sim.startSimulation(4000,false,50));
+		System.out.println(sim.startSimulation(4000,true,30));
 	}
 }

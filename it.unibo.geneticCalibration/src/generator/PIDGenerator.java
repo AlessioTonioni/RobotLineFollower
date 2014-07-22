@@ -7,6 +7,11 @@ import java.util.Random;
 import member.IPopulationMember;
 import member.PIDPopulationMember;
 
+/**
+ * USed with the PIDCalibration genetic algorithm
+ * @author Alessio Tonioni
+ *
+ */
 public class PIDGenerator extends AbstractGenerator{
 
 	private Random rand;
@@ -65,6 +70,9 @@ public class PIDGenerator extends AbstractGenerator{
 	    return rand.nextInt((max - min) + 1) + min;
 	}
 
+	/**
+	 * The first generation it's totaly random
+	 */
 	@Override
 	public List<IPopulationMember> getFirstGeneration(int size) {
 		List<IPopulationMember> result=new ArrayList<IPopulationMember>();

@@ -12,6 +12,11 @@ import space.IMap;
 import space.IPoint;
 import space.PointFactory;
 
+/**
+ * Simulated differential drive robot with two line sensors
+ * @author Alessio Tonioni
+ *
+ */
 public class LineSensorDDRobot extends SimpleDDRobot{
 	private double deltaRightSensorX;
 	private double deltaRightSensorY;
@@ -26,7 +31,17 @@ public class LineSensorDDRobot extends SimpleDDRobot{
 	private boolean leftOnLine=false;
 	private boolean rightOnLine=false;
 	
-	
+	/**
+	 * default constructor
+	 * @param robotPosition: starting center of the wheel axis position
+	 * @param heading: robot headings in radiants 
+	 * @param radius: wheel radius in cm
+	 * @param wheelDistance: wheel axis length in cm
+	 * @param maxSpeed: max angular speed of the wheel
+	 * @param workingZone: map in which the robot moves
+	 * @param leftSensor: left line sensor position
+	 * @param rightSensor: right line sensor position
+	 */
 	public LineSensorDDRobot(IPoint robotPosition, double heading,
 			double radius, double wheelDistance, double maxSpeed, IMap workingZone, 
 			IPoint leftSensor, IPoint rightSensor) {
@@ -76,6 +91,10 @@ public class LineSensorDDRobot extends SimpleDDRobot{
 		}
 	}
 
+	/**
+	 * Add observer that will be notified when one of the sensor enter a line or left a line
+	 * @param observer
+	 */
 	public void addObserver(IDetectorObserver observer){
 		observers.add(observer);
 	}
