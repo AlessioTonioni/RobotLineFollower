@@ -31,6 +31,7 @@ public class MotorBasedDDActuators implements IDDActuators {
 			IWheel rightWheel = wheelCommand.getWheelByID(DDWheelID.RIGHT.toString());
 			MotorState rightState = toMotorState(rightWheel.getSpeed().getSpeed());
 			IMotorSpeed rightSpeed = new MotorSpeed(toMotorSpeed(rightWheel.getSpeed().getSpeed()));
+			//System.out.println("L: "+leftSpeed.getPercentageOfSpeed()+" "+leftState+" R: "+rightSpeed.getPercentageOfSpeed()+" "+rightState);
 			leftMotor.execute(new MotorCommand(leftSpeed,leftState));
 			rightMotor.execute(new MotorCommand(rightSpeed,rightState));
 		} catch (Exception e) {

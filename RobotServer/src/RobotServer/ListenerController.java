@@ -14,9 +14,9 @@ import it.unibo.iot.robot.IDifferentialDriveRobot;
 import it.unibo.iot.robot.IRobot;
 import it.unibo.lineFollower.ILineFollowerController;
 import it.unibo.lineFollower.PIDLineFollowerController;
+import it.unibo.lineFollower.PIDLineFollowerControllerFinale;
 import it.unibo.lineFollower.StateMachineBiLineFollowerController;
 import it.unibo.lineFollower.StateMachineMonoLineFollowerController;
-import it.unibo.lineFollowerFinale.PIDLineFollowerControllerFinale;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;

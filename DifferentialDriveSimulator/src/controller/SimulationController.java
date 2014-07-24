@@ -144,7 +144,7 @@ public class SimulationController {
 			simulatedTimeMillis+=millisForTick;  
 			
 			//il controller calcola il comando da mettere in esecuzione in seguito
-			controller.doJob();
+			controller.run();
 			
 			//ottengo il comando da eseguire
 			IWheelCommand wheelCommand=puppet.getCurrentCmd();	
@@ -161,8 +161,8 @@ public class SimulationController {
 			try{
 				simulatedRobot.update_ddPercentage(rightSpeedPercentage, leftSpeedPercentage, (simulatedTimeMillis-lastTime)*0.001);
 			}catch(Exception e){
-				System.out.println("Robot Fuori Mappa");
-				return 0;
+				//System.out.println("Robot Fuori Mappa");
+				return score;
 			}
 			lastTime=simulatedTimeMillis;
 			

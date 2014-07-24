@@ -138,7 +138,7 @@ public class SimpleMain {
 		IDifferentialDriveRobot robot=(IDifferentialDriveRobot)conf.getRealRobot();
 		ILineFollowerController controller=new PIDLineFollowerController(RobotSpeedValue.ROBOT_SPEED_LOW, robot,false);
 		((PIDLineFollowerController)controller).configure("costanti.txt");
-		controller.doJob();
+		controller.run();
 		
 	}
 }

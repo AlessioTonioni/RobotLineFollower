@@ -11,6 +11,11 @@ import it.unibo.iot.robot.IRobot;
 import it.unibo.iot.sensors.detector.IDetectorObservable;
 import it.unibo.iot.sensors.detector.IDetectorObserver;
 
+/**
+ * Abstract class father of all the controller based on a state machine logic, fully reactive,
+ * @author Alessio Tonioni
+ *
+ */
 public abstract class AbstractStateMachineLineFollowerController implements ILineFollowerController {
 	protected IRobotCommand currentCmd;
 	protected IRobot robot;
@@ -67,11 +72,9 @@ public abstract class AbstractStateMachineLineFollowerController implements ILin
 		this.isForward=isForward;
 		setCorrectCommand();
 	}
-
-	public void doJob(){
-		run();
-	}
-	
+	/**
+	 * Method with the business logic of the controller 
+	 */
 	@Override
 	public void run() {
 		IConfiguration conf = Configurator.getConfiguration();

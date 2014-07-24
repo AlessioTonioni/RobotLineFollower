@@ -45,7 +45,7 @@ public class MockPIDController extends PIDLineFollowerController {
 	 * calculate the next command and execute it on the simulated robot
 	 */
 	@Override
-	public void doJob(){
+	public void run(){
 		robot.execute(calculateNewCommand());
 	}
 

@@ -1,12 +1,23 @@
 package it.unibo.errorUpdater;
 
+import it.unibo.iot.configuration.IConfiguration;
+import it.unibo.iot.configurator.Configurator;
 import it.unibo.iot.models.sensorData.IDetection;
+import it.unibo.iot.sensors.detector.IDetectorObservable;
+import it.unibo.iot.sensors.detector.IDetectorObserver;
+import it.unibo.lineFollower.PIDLineFollowerController;
 
+/**
+ * Implementations for an IErrorUpdater for a two line sensors robot
+ * @author Alessio Tonioni
+ *
+ */
 public class TwoLineSensorErrorUpdater implements IErrorUpdater {
 
 	private int error=0;
-	@Override
-	public void notify(IDetection detection) {
+	private boolean configured=false;
+
+	private void updateError(IDetection detection) {
 		switch (detection.getDirection()){
 		case EAST:
 			if(detection.getVal())
@@ -26,8 +37,33 @@ public class TwoLineSensorErrorUpdater implements IErrorUpdater {
 	}
 
 	@Override
-	public int getError() {
-		return error;
+	public int getError() throws Exception {
+		if(configured)
+			return error;
+		else
+			throw new Exception("ErrorUpdater not yet configured!");
+	}
+
+	@Override
+	public void configure() {
+		IConfiguration conf = Configurator.getConfiguration();
+		IDetectorObserver obsDetectorObserver = new IDetectorObserver() {
+
+			@Override
+			public void notify(IDetection detection) {
+				updateError(detection);
+			}
+		};
+		IDetectorObservable [] detectorObservables = conf.getLineDetectorObservables();
+		for (IDetectorObservable iDetectorObservable : detectorObservables) {
+			iDetectorObservable.addObserver(obsDetectorObserver);
+		}
+		configured=true;
+	}
+
+	@Override
+	public boolean isConfigured() {
+		return configured;
 	}
 
 }

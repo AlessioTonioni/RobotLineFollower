@@ -26,8 +26,13 @@ public class DoubleCirconference  implements IRobotPositionToScore{
 		double robotY=robotPosition.getY();
 		
 		if(isInsideOuterCirconference(robotX, robotY) && isOutFromInnerCirconference(robotX, robotY) 
-				&& hasMoved(robotPosition))
+				&& hasMoved(robotPosition)){
 			score=1;
+			if(robotPosition.getY()>0 && (robotPosition.getX()>lastPositionX))
+				score+=1;
+			else if(robotPosition.getY()>0 && (robotPosition.getX()<lastPositionX))
+				score+=1;
+		}
 		lastPositionX=robotPosition.getX();
 		lastPositionY=robotPosition.getY();
 		return score;

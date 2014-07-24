@@ -21,6 +21,12 @@ import it.unibo.iot.robot.IDifferentialDriveRobot;
 import it.unibo.iot.sensors.detector.IDetectorObservable;
 import it.unibo.iot.sensors.detector.IDetectorObserver;
 
+/**
+ * Implementation of an ILineFollowerController based on a PID controller for a robot with two line 
+ * sensors.
+ * @author Alessio Tonioni
+ *
+ */
 public class PIDLineFollowerController implements ILineFollowerController {
 
 	protected IDifferentialDriveRobot robot;
@@ -42,12 +48,23 @@ public class PIDLineFollowerController implements ILineFollowerController {
 	protected volatile boolean running = true;
 	protected boolean configured=false;
 
+	/**
+	 * 
+	 * @param defaultSpeed speed at which the robot it's supposed to move
+	 * @param robot robot to control
+	 * @param isForward true if the robot move forward, false otherwise
+	 */
 	public PIDLineFollowerController(RobotSpeedValue defaultSpeed, IDifferentialDriveRobot robot, boolean isForward){
 		this.robot=robot;
 		this.speed=defaultSpeed;
 		this.isForward=isForward;
 	}
 
+	/**
+	 * Sets the PID constants from the file which name is given as a parameter 
+	 * @param filename name of the file to read
+	 * @throws IOException thrown if the file it's not found or can't be readed
+	 */
 	public void configure(String filename) throws IOException{
 		File f=new File(filename);
 		if(f.exists()){
@@ -67,6 +84,12 @@ public class PIDLineFollowerController implements ILineFollowerController {
 		}
 	}
 
+	/**
+	 * Configure the PID constants to the three value passed as parameter
+	 * @param kProportional 
+	 * @param kDerivative
+	 * @param kIntegral
+	 */
 	public void configure(int kProportional, int kDerivative, int kIntegral){
 		error=0;
 		integral=0;
@@ -82,6 +105,7 @@ public class PIDLineFollowerController implements ILineFollowerController {
 		running = false;
 	}
 
+	
 	public void updateError(IDetection detection){
 		switch (detection.getDirection()){
 		case EAST:
@@ -107,11 +131,6 @@ public class PIDLineFollowerController implements ILineFollowerController {
 		speed=newSpeed;
 	}
 
-	@Override
-	public void doJob(){
-		run();
-	}
-
 	protected int calculateTurn(){
 		derivative=error-lastError;
 		integral=(error==0)?0:integral+error;
@@ -127,8 +146,8 @@ public class PIDLineFollowerController implements ILineFollowerController {
 		//System.out.println("errore: "+error+" integrale:"+integral+" derivativo:"+derivative+" turn calcolata:" +turn);
 
 		if(isForward){
-			rightSpeed=new WheelSpeed(WheelSpeedValue.RWSETTABLE.setValue(speed.getNumValue()+turn));
-			leftSpeed=new WheelSpeed(WheelSpeedValue.LWSETTABLE.setValue(speed.getNumValue()-turn));
+			rightSpeed=new WheelSpeed(WheelSpeedValue.RWSETTABLE.setValue(speed.getNumValue()-turn));
+			leftSpeed=new WheelSpeed(WheelSpeedValue.LWSETTABLE.setValue(speed.getNumValue()+turn));
 		} else {
 			rightSpeed=new WheelSpeed(WheelSpeedValue.RWSETTABLE.setValue(-speed.getNumValue()+turn));
 			leftSpeed=new WheelSpeed(WheelSpeedValue.LWSETTABLE.setValue(-speed.getNumValue()-turn));

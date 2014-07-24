@@ -13,6 +13,12 @@ import it.unibo.iot.robot.IRobot;
 //	 |________|  ->
 //==================================LINE===============
 
+/**
+ * Implementation of an ILineFollowerController based on a state machine. The robot is inside two lines
+ * and tries not to overpass them.
+ * @author Alessio Tonioni
+ *
+ */
 public class StateMachineBiLineFollowerController extends AbstractStateMachineLineFollowerController {
 	
 	public StateMachineBiLineFollowerController(RobotSpeedValue defaultSpeed,
