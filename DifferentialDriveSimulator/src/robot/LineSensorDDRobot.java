@@ -2,6 +2,7 @@ package robot;
 
 import it.unibo.iot.models.sensorData.Detection;
 import it.unibo.iot.models.sensorData.DirectionValue;
+import it.unibo.iot.sensors.detector.IDetectorObservable;
 import it.unibo.iot.sensors.detector.IDetectorObserver;
 
 import java.util.ArrayList;
@@ -17,19 +18,19 @@ import space.PointFactory;
  * @author Alessio Tonioni
  *
  */
-public class LineSensorDDRobot extends SimpleDDRobot{
-	private double deltaRightSensorX;
-	private double deltaRightSensorY;
-	private double deltaLeftSensorX;
-	private double deltaLeftSensorY;
+public class LineSensorDDRobot extends SimpleDDRobot implements IDetectorObservable{
+	protected double deltaRightSensorX;
+	protected double deltaRightSensorY;
+	protected double deltaLeftSensorX;
+	protected double deltaLeftSensorY;
 	
-	private IMap workingZone;
-	private List<IDetectorObserver> observers;
-	private IPoint leftLineSensorPosition;
-	private IPoint rightLineSensorPosition;
+	protected IMap workingZone;
+	protected List<IDetectorObserver> lineObservers;
+	protected IPoint leftLineSensorPosition;
+	protected IPoint rightLineSensorPosition;
 	
-	private boolean leftOnLine=false;
-	private boolean rightOnLine=false;
+	protected boolean leftOnLine=false;
+	protected boolean rightOnLine=false;
 	
 	/**
 	 * default constructor
@@ -47,7 +48,7 @@ public class LineSensorDDRobot extends SimpleDDRobot{
 			IPoint leftSensor, IPoint rightSensor) {
 		super(robotPosition, heading, radius, wheelDistance, maxSpeed);
 		this.workingZone=workingZone;
-		observers=new ArrayList<IDetectorObserver>();
+		lineObservers=new ArrayList<IDetectorObserver>();
 		this.leftLineSensorPosition=leftSensor;
 		this.rightLineSensorPosition=rightSensor;
 		deltaRightSensorX=this.getRobotPosition().getX()-rightLineSensorPosition.getX();
@@ -78,14 +79,14 @@ public class LineSensorDDRobot extends SimpleDDRobot{
 		if(newLeft!=leftOnLine){
 			leftOnLine=newLeft;
 			Detection detection=new Detection("line", DirectionValue.WEST, leftOnLine);
-			for(IDetectorObserver s: observers){
+			for(IDetectorObserver s: lineObservers){
 				s.notify(detection);
 			}
 		}
 		if(newRight!=rightOnLine){
 			rightOnLine=newRight;
 			Detection detection=new Detection("line", DirectionValue.EAST, rightOnLine);
-			for(IDetectorObserver s: observers){
+			for(IDetectorObserver s: lineObservers){
 				s.notify(detection);
 			}
 		}
@@ -96,7 +97,7 @@ public class LineSensorDDRobot extends SimpleDDRobot{
 	 * @param observer
 	 */
 	public void addObserver(IDetectorObserver observer){
-		observers.add(observer);
+		lineObservers.add(observer);
 	}
 	
 	@Override
@@ -114,6 +115,12 @@ public class LineSensorDDRobot extends SimpleDDRobot{
 		updateComponentPosition();
 		leftOnLine=false;
 		rightOnLine=false;
+	}
+
+	@Override
+	public void removeObserver(IDetectorObserver observer) {
+		lineObservers.remove(observer);
+		
 	}
 	
 

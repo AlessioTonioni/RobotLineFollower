@@ -8,7 +8,8 @@ import it.unibo.iot.sensors.detector.IDetectorObserver;
 import it.unibo.lineFollower.PIDLineFollowerController;
 
 /**
- * Implementations for an IErrorUpdater for a two line sensors robot
+ * Implementations for an IErrorUpdater for a two line sensors robot, the robot is between two 
+ * black linees that serve as rails. 
  * @author Alessio Tonioni
  *
  */
@@ -21,15 +22,15 @@ public class TwoLineSensorErrorUpdater implements IErrorUpdater {
 		switch (detection.getDirection()){
 		case EAST:
 			if(detection.getVal())
-				error-=10;
+				error-=100;
 			else
-				error+=10;  //ho lasciato la linea, azzero l'errore relativo
+				error+=100;  //ho lasciato la linea, azzero l'errore relativo
 			break;
 		case WEST:
 			if(detection.getVal())
-				error+=10;
+				error+=100;
 			else
-				error-=10; //ho lasciato la linea, azzero l'errore relativo
+				error-=100; //ho lasciato la linea, azzero l'errore relativo
 			break;
 		default:
 			break;
@@ -45,8 +46,7 @@ public class TwoLineSensorErrorUpdater implements IErrorUpdater {
 	}
 
 	@Override
-	public void configure() {
-		IConfiguration conf = Configurator.getConfiguration();
+	public void configure(IConfiguration conf) {
 		IDetectorObserver obsDetectorObserver = new IDetectorObserver() {
 
 			@Override

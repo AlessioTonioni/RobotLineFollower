@@ -87,9 +87,10 @@ public class ListenerController {
 			controller=new StateMachineMonoLineFollowerController(getSpeed(speed),robot,Boolean.parseBoolean(isForward));
 			break;
 		case PIDFinale:
-			ICommandTranslator c=new DDCommandTranslator(getSpeed(speed).getNumValue(),Boolean.parseBoolean(isForward));
+			ICommandTranslator c=new DDCommandTranslator(getSpeed(speed).getNumValue(),Boolean.parseBoolean(isForward),robot);
 			IErrorUpdater e=new TwoLineSensorErrorUpdater();
-			controller=new PIDLineFollowerControllerFinale(robot, e, c);
+			e.configure(Configurator.getConfiguration());
+			controller=new PIDLineFollowerControllerFinale( e, c);
 			break;
 		default:
 			return;	

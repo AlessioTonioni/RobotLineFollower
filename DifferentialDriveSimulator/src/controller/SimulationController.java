@@ -3,13 +3,23 @@ package controller;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import configuration.MockConfiguration;
 import lineFollower.MockPIDController;
+import lineFollower.MockPIDControllerFinale;
+import it.unibo.commandTranslator.DDCommandTranslator;
+import it.unibo.commandTranslator.ICommandTranslator;
+import it.unibo.errorUpdater.IErrorUpdater;
+import it.unibo.errorUpdater.ThreeSensorErrorUpdater;
+import it.unibo.errorUpdater.TwoLineSensorErrorUpdater;
+import it.unibo.iot.configurator.Configurator;
 import it.unibo.iot.models.robotCommands.RobotSpeedValue;
 import it.unibo.iot.models.wheelCommands.IWheel;
 import it.unibo.iot.models.wheelCommands.IWheelCommand;
 import it.unibo.iot.models.wheelCommands.WheelSpeedValue;
 import it.unibo.iot.robot.DDWheelID;
 import it.unibo.lineFollower.ILineFollowerController;
+import it.unibo.lineFollower.PIDLineFollowerControllerFinale;
+import robot.ColorLineSensorDDRobot;
 import robot.IDDRobot;
 import robot.LineSensorDDRobot;
 import robot.MockRobot;
@@ -27,8 +37,7 @@ public class SimulationController {
 	private int simulatedTimeMillis;
 	private IDDRobot simulatedRobot;
 	private MockRobot puppet;
-	private MockPIDController m;
-	private ILineFollowerController controller;
+	private PIDLineFollowerControllerFinale controller;
 	private IMap map;
 	private IRobotPositionToScore calculator;
 	 /**
@@ -72,6 +81,7 @@ public class SimulationController {
 		twoDPoint start=new twoDPoint(0,0);  //centro dell'asse delle ruote
 		twoDPoint leftS=new twoDPoint(-2,3); //sensore di linea sinistro
 		twoDPoint rightS=new twoDPoint(2,3); //sensore di linea destro
+		twoDPoint colorS=new twoDPoint(0,3); //sensore colore
 		
 		double heading=Math.PI/2;   //orientamento
 		double wheelRadius=2.5;     //raggio delle ruote
@@ -79,8 +89,8 @@ public class SimulationController {
 		double wheelAngularSpeed=10.13;  //velocità angolare massima di rotazione delle ruote
 		
 		
-		return new LineSensorDDRobot(start, heading, wheelRadius, wheelDistance, 
-				wheelAngularSpeed, map, leftS, rightS);
+		return new ColorLineSensorDDRobot(start, heading, wheelRadius, wheelDistance, 
+				wheelAngularSpeed, map, leftS, rightS,colorS);
 		
 	}
 	
@@ -98,12 +108,21 @@ public class SimulationController {
 	 * @return an istance of ILineFollowerController
 	 * @throws Exception
 	 */
-	private ILineFollowerController createController(int defaultSpeed) throws Exception{
+	private PIDLineFollowerControllerFinale createController(int defaultSpeed) throws Exception{
 		if(defaultSpeed<0 || defaultSpeed>100) throw new Exception("Velocità del controller non valida");
+		
+		ICommandTranslator c=new DDCommandTranslator(defaultSpeed,true,puppet);
+		IErrorUpdater e=new ThreeSensorErrorUpdater();
+		e.configure(new MockConfiguration((ColorLineSensorDDRobot)simulatedRobot));
+		MockPIDControllerFinale m= new MockPIDControllerFinale(e, c);
+		m.configure("costanti.txt");
+		return m;
+		
+		/*
 		m= new MockPIDController(RobotSpeedValue.LIBERA.setNumValue(defaultSpeed), puppet, true);
 		m.setObserver((LineSensorDDRobot)simulatedRobot);
 		m.configure("costanti.txt");
-		return m;
+		return m;*/
 	}
 	
 	/**
@@ -113,7 +132,7 @@ public class SimulationController {
 	 * @param kIntegral
 	 */
 	public void changeControllerCostants(int kProportional, int kDerivative, int kIntegral){
-		m.configure(kProportional, kDerivative, kIntegral);
+		controller.configure(kProportional, kDerivative, kIntegral);
 	}
 	
 	/**

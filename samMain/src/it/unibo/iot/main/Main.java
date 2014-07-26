@@ -26,7 +26,7 @@ public class Main {
 		IRobotCommand backward = new RobotBackward(speed);
 		IRobotCommand stop = new RobotStop( new RobotSpeed(RobotSpeedValue.ROBOT_SPEED_LOW));
 		IConfiguration conf = Configurator.getConfiguration();
-		IDetectorObserver obsDetectorObserver = new IDetectorObserver() {
+		/*IDetectorObserver obsDetectorObserver = new IDetectorObserver() {
 			
 			@Override
 			public void notify(IDetection detection) {
@@ -37,9 +37,9 @@ public class Main {
 		IDetectorObservable [] detectorObservables = conf.getLineDetectorObservables();
 		for (IDetectorObservable iDetectorObservable : detectorObservables) {
 			iDetectorObservable.addObserver(obsDetectorObserver);
-		}
+		}*/
 		
-		IDistanceObserver distanceObserver = new IDistanceObserver() {
+		/*IDistanceObserver distanceObserver = new IDistanceObserver() {
 			@Override
 			public void notify(IDistanceSensorData distance) {
 				System.out.println("********* " + distance.getValueStringRep());
@@ -48,7 +48,7 @@ public class Main {
 		IDistanceObservable [] distanceObservables = conf.getDistanceObservables();
 		for (IDistanceObservable iDistanceObservable : distanceObservables) {
 			iDistanceObservable.addObserver(distanceObserver);
-		}
+		}*/
 
 		IColorSensorObserver colorObserver = new IColorSensorObserver() {
 			
@@ -62,13 +62,13 @@ public class Main {
 		
 		IRobot robot= conf.getRealRobot();
 
-		robot.execute(forward);
+		/*robot.execute(forward);
 		Thread.sleep(500);	
 		robot.execute(backward);
 //		Thread.sleep(1000);
 //		robot.execute(forward);
 		Thread.sleep(500);	
-		robot.execute(stop);
+		robot.execute(stop);*/
 		Thread.sleep(50000);	
 		robot.execute(stop);
 

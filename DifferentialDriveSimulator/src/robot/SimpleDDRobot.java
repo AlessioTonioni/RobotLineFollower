@@ -78,7 +78,8 @@ public class SimpleDDRobot implements IDDRobot {
 
 	@Override
 	public void update_ddPercentage(double lPercentage, double rPercentage, double dt) {
-		update_ddr(lPercentage*fullSpeed,rPercentage*fullSpeed, dt);		
+		update_ddr(lPercentage*fullSpeed,rPercentage*fullSpeed, dt);
+		//System.out.println(lPercentage+" "+rPercentage);
 	}
 
 	@Override

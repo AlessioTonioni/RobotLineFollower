@@ -1,5 +1,7 @@
 package it.unibo.lineFollower;
 
+import javax.security.auth.login.Configuration;
+
 import it.unibo.commandTranslator.ICommandTranslator;
 import it.unibo.errorUpdater.IErrorUpdater;
 import it.unibo.iot.configuration.IConfiguration;
@@ -18,8 +20,8 @@ import it.unibo.iot.sensors.detector.IDetectorObserver;
  *
  */
 public class PIDLineFollowerControllerFinale extends PIDLineFollowerController{
-	private IErrorUpdater errorUpdater;
-	private ICommandTranslator commandTranslator;
+	protected IErrorUpdater errorUpdater;
+	protected ICommandTranslator commandTranslator;
 	
 	/**
 	 * default constructor
@@ -27,22 +29,21 @@ public class PIDLineFollowerControllerFinale extends PIDLineFollowerController{
 	 * @param errorUpdater 
 	 * @param commandTranslator
 	 */
-	public PIDLineFollowerControllerFinale( IDifferentialDriveRobot robot, IErrorUpdater errorUpdater, ICommandTranslator commandTranslator){
-		super(null,robot,false);
+	public PIDLineFollowerControllerFinale( IErrorUpdater errorUpdater, ICommandTranslator commandTranslator){
+		super(null,null,false);
 		this.errorUpdater=errorUpdater;
 		this.commandTranslator=commandTranslator;
 	}
 	
 	@Override
 	public void run(){
-		if(configured){
-			errorUpdater.configure();		
+		if(configured){		
 			System.out.println("ReadyToStart!");
 			while(running){  
 				try{
 					this.error=errorUpdater.getError();
 					int turn=calculateTurn();
-					robot.execute(commandTranslator.getWheelCommand(turn));
+					commandTranslator.executeRobotCommand(turn);
 					Thread.sleep(millisSleep);  
 				}catch(Exception e){
 					continue;
@@ -53,4 +54,5 @@ public class PIDLineFollowerControllerFinale extends PIDLineFollowerController{
 			return;
 		}
 	}
+	
 }
