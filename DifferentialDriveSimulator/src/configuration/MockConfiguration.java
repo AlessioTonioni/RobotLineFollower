@@ -9,6 +9,12 @@ import it.unibo.iot.sensors.colorSensor.IColorSensorObservable;
 import it.unibo.iot.sensors.detector.IDetectorObservable;
 import it.unibo.iot.sensors.distanceSensor.IDistanceObservable;
 
+/**
+ * Impplementation of the IConfiguration class used in a simulated environment, it allow the mock robot the 
+ * software robot to be seen as a real one from the rest of the software components.
+ * @author Alessio Tonioni
+ *
+ */
 public class MockConfiguration implements IConfiguration {
 
 	private ColorLineSensorDDRobot simulatedRobot;

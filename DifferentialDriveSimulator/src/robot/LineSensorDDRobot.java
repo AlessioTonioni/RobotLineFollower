@@ -96,6 +96,7 @@ public class LineSensorDDRobot extends SimpleDDRobot implements IDetectorObserva
 	 * Add observer that will be notified when one of the sensor enter a line or left a line
 	 * @param observer
 	 */
+	@Override
 	public void addObserver(IDetectorObserver observer){
 		lineObservers.add(observer);
 	}
@@ -117,7 +118,11 @@ public class LineSensorDDRobot extends SimpleDDRobot implements IDetectorObserva
 		rightOnLine=false;
 	}
 
+
 	@Override
+	/**
+	 * Remove observer from the line detector's observer list
+	 */
 	public void removeObserver(IDetectorObserver observer) {
 		lineObservers.remove(observer);
 		

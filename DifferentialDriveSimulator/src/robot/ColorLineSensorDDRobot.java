@@ -16,6 +16,11 @@ import space.IMap;
 import space.IPoint;
 import space.PointFactory;
 
+/**
+ * Simulated Differential Drive robot with two line sensors and a color sensor.
+ * @author Alessio Tonioni
+ *
+ */
 public class ColorLineSensorDDRobot extends LineSensorDDRobot implements IColorSensorObservable {
 	private double deltaColorSensorX;
 	private double deltaColorSensorY;
@@ -25,6 +30,18 @@ public class ColorLineSensorDDRobot extends LineSensorDDRobot implements IColorS
 	
 	protected List<IColorSensorObserver> colorObserver;
 	
+	/**
+	 * default constructor
+	 * @param robotPosition: starting center of the wheel axis position
+	 * @param heading: robot headings in radiants 
+	 * @param radius: wheel radius in cm
+	 * @param wheelDistance: wheel axis length in cm
+	 * @param maxSpeed: max angular speed of the wheel
+	 * @param workingZone: map in which the robot moves
+	 * @param leftSensor: left line sensor position
+	 * @param rightSensor: right line sensor position
+	 * @param colorSensor: color sensor position
+	 */
 	public ColorLineSensorDDRobot(IPoint robotPosition, double heading,
 			double radius, double wheelDistance, double maxSpeed, IMap workingZone, 
 			IPoint leftSensor, IPoint rightSensor, IPoint colorSensor) {
@@ -69,10 +86,18 @@ public class ColorLineSensorDDRobot extends LineSensorDDRobot implements IColorS
 				(robotPosition.getX()-deltaColorSensorX, robotPosition.getY()-deltaColorSensorY);
 	}
 	
+	/**
+	 * Method used to add observer at the color sensor, they will be notified when the sensor it's above a 
+	 * different color in the simulated map.
+	 */
+	@Override
 	public void addObserver(IColorSensorObserver obs){
 		colorObserver.add(obs);
 	}
 
+	/**
+	 * Method used to remove observer from the observer's list of the color sensor
+	 */
 	@Override
 	public void removeObserver(IColorSensorObserver observer) {
 		colorObserver.remove(observer);

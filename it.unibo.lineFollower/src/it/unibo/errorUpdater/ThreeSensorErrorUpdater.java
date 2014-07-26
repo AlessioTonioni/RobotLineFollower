@@ -102,5 +102,10 @@ public class ThreeSensorErrorUpdater implements IErrorUpdater{
 		}
 	}
 
+	@Override
+	public void reset() {
+		error=0;
+	}
+
 
 }

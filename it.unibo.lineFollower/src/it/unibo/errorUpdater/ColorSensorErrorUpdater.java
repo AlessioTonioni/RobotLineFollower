@@ -72,6 +72,12 @@ public class ColorSensorErrorUpdater implements IErrorUpdater{
 		
 	}
 
+	@Override
+	public void reset() {
+		error=0;
+		
+	}
+
 
 
 }

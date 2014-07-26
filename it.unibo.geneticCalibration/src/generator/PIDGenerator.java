@@ -8,7 +8,7 @@ import member.IPopulationMember;
 import member.PIDPopulationMember;
 
 /**
- * USed with the PIDCalibration genetic algorithm
+ * Used with the PIDCalibration genetic algorithm
  * @author Alessio Tonioni
  *
  */

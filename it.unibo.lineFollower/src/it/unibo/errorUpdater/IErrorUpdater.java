@@ -28,4 +28,9 @@ public interface IErrorUpdater {
 	 * @return
 	 */
 	boolean isConfigured();
+	
+	/**
+	 * reset the error
+	 */
+	void reset();
 }

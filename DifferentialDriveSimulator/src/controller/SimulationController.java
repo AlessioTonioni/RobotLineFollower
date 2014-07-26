@@ -112,17 +112,11 @@ public class SimulationController {
 		if(defaultSpeed<0 || defaultSpeed>100) throw new Exception("Velocità del controller non valida");
 		
 		ICommandTranslator c=new DDCommandTranslator(defaultSpeed,true,puppet);
-		IErrorUpdater e=new ThreeSensorErrorUpdater();
+		IErrorUpdater e=new TwoLineSensorErrorUpdater();
 		e.configure(new MockConfiguration((ColorLineSensorDDRobot)simulatedRobot));
 		MockPIDControllerFinale m= new MockPIDControllerFinale(e, c);
 		m.configure("costanti.txt");
 		return m;
-		
-		/*
-		m= new MockPIDController(RobotSpeedValue.LIBERA.setNumValue(defaultSpeed), puppet, true);
-		m.setObserver((LineSensorDDRobot)simulatedRobot);
-		m.configure("costanti.txt");
-		return m;*/
 	}
 	
 	/**

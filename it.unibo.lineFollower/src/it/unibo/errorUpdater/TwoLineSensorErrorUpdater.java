@@ -66,4 +66,9 @@ public class TwoLineSensorErrorUpdater implements IErrorUpdater {
 		return configured;
 	}
 
+	@Override
+	public void reset() {
+		error=0;
+	}
+
 }

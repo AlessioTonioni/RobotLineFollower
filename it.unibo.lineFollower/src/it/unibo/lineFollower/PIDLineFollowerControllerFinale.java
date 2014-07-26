@@ -1,5 +1,7 @@
 package it.unibo.lineFollower;
 
+import java.io.IOException;
+
 import javax.security.auth.login.Configuration;
 
 import it.unibo.commandTranslator.ICommandTranslator;
@@ -23,6 +25,18 @@ public class PIDLineFollowerControllerFinale extends PIDLineFollowerController{
 	protected IErrorUpdater errorUpdater;
 	protected ICommandTranslator commandTranslator;
 	
+	@Override
+	public void configure(String filename) throws IOException {
+		super.configure(filename);
+		errorUpdater.reset();
+	}
+
+	@Override
+	public void configure(int kProportional, int kDerivative, int kIntegral) {
+		super.configure(kProportional, kDerivative, kIntegral);
+		errorUpdater.reset();
+	}
+
 	/**
 	 * default constructor
 	 * @param robot 
