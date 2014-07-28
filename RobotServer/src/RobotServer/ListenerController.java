@@ -22,33 +22,30 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.StringTokenizer;
+
+import commandsExecutor.ICommandsExecutor;
 
 import messages.controllerType;
 
 public class ListenerController {
 	//connection sockets
+	private ServerSocket master;
 	private Socket cmdReceiver;
 	private DataInputStream cmdStream;
 
-	//robot
-	private IDifferentialDriveRobot robot;
-	private ILineFollowerController controller;
+	private ICommandsExecutor cmdExecutor;
 
-	//Thread
-	private Thread controllerThread;
-	private boolean isRunning;
-
-	public ListenerController(Socket socket) throws IOException{
-		cmdReceiver = socket;
-		cmdStream = new DataInputStream(cmdReceiver.getInputStream());
-		IConfiguration conf = Configurator.getConfiguration();
-		robot=(IDifferentialDriveRobot)conf.getRealRobot();
-
+	public ListenerController(ServerSocket socket,ICommandsExecutor ex) throws IOException{
+		master = socket;
+		cmdExecutor=ex;
 	}
 
 	public void doJob() throws IOException, InterruptedException{
+		cmdReceiver=master.accept();
+		cmdStream=new DataInputStream(cmdReceiver.getInputStream());
 		while(true){
 			int dim=cmdStream.read();
 			//cmdStream.read(); cmdStream.read(); cmdStream.read();
@@ -61,80 +58,16 @@ public class ListenerController {
 			StringTokenizer cutter=new StringTokenizer(cmdToExecute);
 			String type=cutter.nextToken();
 			if(type.equalsIgnoreCase("cmd")){
-				executeCommand(cutter.nextToken(),cutter.nextToken());
+				cmdExecutor.executeCommand(cutter.nextToken(),cutter.nextToken());
 			} else if(type.equalsIgnoreCase("cnt")){
-				executeController(cutter.nextToken(),cutter.nextToken(),cutter.nextToken());
+				cmdExecutor.executeController(cutter.nextToken(),cutter.nextToken(),cutter.nextToken());
 			}
 			
 		}
 	}
 
-	private void executeController(String cntType, String speed, String isForward) throws IOException, InterruptedException {
-		killController();
-		if(!CommandFactory.getInstance().isDefaultSpeedMode()){
-			CommandFactory.getInstance().switchMode();
-		}
-		switch (controllerType.valueOf(cntType)){
-		case PID:
-			//System.out.println("PID "+getSpeed(speed).getNumValue()+" "+Boolean.getBoolean(isForward));
-			controller=new PIDLineFollowerController(getSpeed(speed), robot,Boolean.parseBoolean(isForward));
-			((PIDLineFollowerController)controller).configure("costanti.txt");
-			break;
-		case StateBiLine:
-			controller=new StateMachineBiLineFollowerController(getSpeed(speed),robot,Boolean.parseBoolean(isForward));
-			break;
-		case StateMonoLine:
-			controller=new StateMachineMonoLineFollowerController(getSpeed(speed),robot,Boolean.parseBoolean(isForward));
-			break;
-		case PIDFinale:
-			ICommandTranslator c=new DDCommandTranslator(getSpeed(speed).getNumValue(),Boolean.parseBoolean(isForward),robot);
-			IErrorUpdater e=new TwoLineSensorErrorUpdater();
-			e.configure(Configurator.getConfiguration());
-			controller=new PIDLineFollowerControllerFinale( e, c);
-			break;
-		default:
-			return;	
-		}
-		controllerThread=new Thread(controller);
-		isRunning=true;
-		controllerThread.start();
-	}
 
-	private RobotSpeedValue getSpeed(String speed) {
-		RobotSpeedValue result;
-		try
-		{
-			result=RobotSpeedValue.LIBERA.setNumValue(Integer.parseInt(speed));
-		} catch (Exception e){
-			result=RobotSpeedValue.ROBOT_SPEED_LOW;
-		}
-		return result;
-	}
 
-	private void executeCommand(String nextToken, String nextToken2) throws InterruptedException {
-		killController();
-		IRobotCommand toExecute;
-		int vel;
-		if(CommandFactory.getInstance().isDefaultSpeedMode()){
-			CommandFactory.getInstance().switchMode();
-		}
-		try
-		{
-			vel=Integer.parseInt(nextToken2);
-			toExecute=CommandFactory.getInstance().getCommand(CommandType.valueOf(nextToken),vel);
-			System.out.println(toExecute.getStringRep());
-		}catch(Exception e){
-			toExecute=CommandFactory.getInstance().getCommand(CommandType.STOP);
-		}
-		robot.execute(toExecute);
-	}
 
-	private void killController() throws InterruptedException {
-		if(isRunning){
-			controller.terminate();
-			controllerThread.join();
-			isRunning=false;
-		}
-	}
 	
 }

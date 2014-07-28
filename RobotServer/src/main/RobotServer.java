@@ -1,5 +1,8 @@
 package main;
 
+import it.unibo.iot.configurator.Configurator;
+import it.unibo.iot.robot.IDifferentialDriveRobot;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -7,6 +10,8 @@ import java.net.ServerSocket;
 import java.net.UnknownHostException;
 import java.util.Enumeration;
 
+import commandsExecutor.DifferentialDriveCommandsExecutor;
+import commandsExecutor.ICommandsExecutor;
 import RobotServer.ListenerController;
 import connection.Shouter;
 
@@ -33,10 +38,11 @@ public class RobotServer {
 		shouterThread.start();
 		System.out.println("Shouter partito");*/
 		
+		ICommandsExecutor ex=new DifferentialDriveCommandsExecutor((IDifferentialDriveRobot)Configurator.getConfiguration().getRealRobot());
 		System.out.println("Attesa Connesione...");
 		ServerSocket server=new ServerSocket(port);
 		//System.out.println(server.getLocalSocketAddress().toString());
-		ListenerController controller=new ListenerController(server.accept());
+		ListenerController controller=new ListenerController(server,ex);
 		/*s.terminate();
 		shouterThread.join();
 		System.out.println("Shout terminato, pronto a ricevere comandi");*/
