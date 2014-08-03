@@ -1,7 +1,7 @@
 package it.unibo.lineFollower.test;
 
 import static org.junit.Assert.*;
-import it.unibo.lineFollower.ILineFollowerController;
+import it.unibo.lineFollower.controller.ILineFollowerController;
 import it.unibo.testRobot.ITestRobot;
 
 import org.junit.Before;

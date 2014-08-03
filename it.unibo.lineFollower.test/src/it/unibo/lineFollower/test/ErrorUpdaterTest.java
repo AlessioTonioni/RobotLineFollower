@@ -1,9 +1,9 @@
 package it.unibo.lineFollower.test;
 
 import static org.junit.Assert.*;
-import it.unibo.errorUpdater.IErrorUpdater;
 import it.unibo.iot.configurator.Configurator;
 import it.unibo.iot.robot.IRobot;
+import it.unibo.lineFollower.errorUpdater.IErrorUpdater;
 import it.unibo.testRobot.ITestRobot;
 import it.unibo.testRobot.ITestSensor;
 import it.unibo.testRobot.MockTestConfiguration;

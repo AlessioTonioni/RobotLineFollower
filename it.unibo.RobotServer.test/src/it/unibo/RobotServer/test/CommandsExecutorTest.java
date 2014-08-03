@@ -8,12 +8,11 @@ import it.unibo.iot.models.robotCommands.IRobotCommand;
 import it.unibo.iot.models.robotCommands.RobotForward;
 import it.unibo.iot.models.robotCommands.RobotStop;
 import it.unibo.iot.robot.IRobot;
+import it.unibo.robotServer.commandsExecutor.ICommandsExecutor;
 import it.unibo.testRobot.ITestRobot;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import commandsExecutor.ICommandsExecutor;
 
 public class CommandsExecutorTest {
 

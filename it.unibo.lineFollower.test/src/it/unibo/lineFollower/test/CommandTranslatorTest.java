@@ -1,10 +1,10 @@
 package it.unibo.lineFollower.test;
 
 import static org.junit.Assert.*;
-import it.unibo.commandTranslator.ICommandTranslator;
 import it.unibo.iot.models.robotCommands.IRobotCommand;
 import it.unibo.iot.models.robotCommands.RobotBackward;
 import it.unibo.iot.models.robotCommands.RobotForward;
+import it.unibo.lineFollower.commandTranslator.ICommandTranslator;
 import it.unibo.testRobot.ITestRobot;
 
 import org.junit.Before;
