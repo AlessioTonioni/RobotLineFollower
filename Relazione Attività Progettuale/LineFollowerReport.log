@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.5.8)  28 JUL 2014 11:41
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.5.8)  5 AUG 2014 13:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -604,29 +604,29 @@ Package graphics Info: Driver file: pdftex.def on input line 91.
 )
 \Gin@req@height=\dimen129
 \Gin@req@width=\dimen130
-)
-No file LineFollowerReport.aux.
+) (./LineFollowerReport.aux)
 \openout1 = `LineFollowerReport.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 169.
-LaTeX Font Info:    ... okay on input line 169.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 169.
-LaTeX Font Info:    ... okay on input line 169.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 169.
-LaTeX Font Info:    ... okay on input line 169.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 169.
-LaTeX Font Info:    ... okay on input line 169.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 169.
-LaTeX Font Info:    ... okay on input line 169.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 169.
-LaTeX Font Info:    ... okay on input line 169.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 169.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 169.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 137.
+LaTeX Font Info:    ... okay on input line 137.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 137.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 137.
+
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 169.
+LaTeX Font Info:    ... okay on input line 137.
 \c@lstlisting=\count127
 
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
@@ -644,211 +644,223 @@ LaTeX Font Info:    ... okay on input line 169.
 \everyMPtoPDFconversion=\toks23
 )
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 182.
+(Font)              <7> on input line 150.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 182.
-LaTeX Font Info:    Try loading font information for T1+cmtt on input line 182.
+(Font)              <5> on input line 150.
+LaTeX Font Info:    Try loading font information for T1+cmtt on input line 150.
 
  (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 1999/05/25 v2.5h Standard LaTeX font definitions
-) [1
+)
+Underfull \hbox (badness 10000) in paragraph at lines 163--166
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 176--178
+
+ []
+
+[1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-<img/casiUso.png, id=9, 391.4625pt x 123.46124pt>
-File: img/casiUso.png Graphic file (type png)
- <use img/casiUso.png>
-Package pdftex.def Info: img/casiUso.png used on input line 232.
-(pdftex.def)             Requested size: 391.46153pt x 123.46092pt.
+<img/PIDUseCases.png, id=9, 823.075pt x 291.0875pt>
+File: img/PIDUseCases.png Graphic file (type png)
+ <use img/PIDUseCases.png>
+Package pdftex.def Info: img/PIDUseCases.png used on input line 197.
+(pdftex.def)             Requested size: 347.12354pt x 122.76225pt.
 
-Overfull \hbox (44.338pt too wide) in paragraph at lines 232--233
+Underfull \hbox (badness 10000) in paragraph at lines 203--208
+
+ []
+
+
+Overfull \hbox (5.59996pt too wide) in paragraph at lines 238--253
  [] 
  []
 
-
-Underfull \hbox (badness 1859) in paragraph at lines 252--253
-[]\T1/cmr/m/n/10 Entitá au-tonoma es-terna al sis-tema che at-traversa l'incroc
-io quando il
- []
-
-
-Underfull \hbox (badness 1859) in paragraph at lines 254--255
-[]\T1/cmr/m/n/10 Entitá au-tonoma es-terna al sis-tema che at-traversa l'incroc
-io quando il
- []
-
-
-Overfull \hbox (109.73808pt too wide) in paragraph at lines 240--257
- [] 
- []
-
+[2 <./img/PIDUseCases.png>]
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2013/08/26 1.5b listings language file
-) [2 <./img/casiUso.png>]
-(/home/alessio/Scrivania/Natali/telecomandoRobot/sema/src/pelican/ISemaphore.ja
-va)
-Overfull \hbox (33.78345pt too wide) in paragraph at lines 271--271
-[]\T1/cmr/m/n/10 /home/alessio/Scrivania/Natali/telecomandoRobot/sema/src/pelic
-an/ISemaphore.java 
- []
-
-
-(/home/alessio/Scrivania/Natali/telecomandoRobot/sema/src/pelican/ColorType.jav
-a)
-Overfull \hbox (28.78467pt too wide) in paragraph at lines 272--272
-[]\T1/cmr/m/n/10 /home/alessio/Scrivania/Natali/telecomandoRobot/sema/src/pelic
-an/ColorType.java 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 274--279
-
- []
-
-
-(/home/alessio/Scrivania/Natali/telecomandoRobot/sema/src/pelican/IController.j
-ava [3])
-Overfull \hbox (30.20099pt too wide) in paragraph at lines 282--282
-[]\T1/cmr/m/n/10 /home/alessio/Scrivania/Natali/telecomandoRobot/sema/src/pelic
-an/IController.java 
- []
-
-
-LaTeX Warning: File `/home/alessio/Scrivania/semaforo/Latex/img/semaforoAnalisi
-.png' not found on input line 287.
-
-
-! Package pdftex.def Error: File `/home/alessio/Scrivania/semaforo/Latex/img/se
-maforoAnalisi.png' not found.
-
-See the pdftex.def package documentation for explanation.
-Type  H <return>  for immediate help.
- ...                                              
-                                                  
-l.287 ...a/semaforo/Latex/img/semaforoAnalisi.png}
-                                                  
-? 
-[4]
-(/home/alessio/Scrivania/Natali/telecomandoRobot/sema/src/pelican/SemaphoreTest
-.java)
-Overfull \hbox (48.83533pt too wide) in paragraph at lines 296--296
-[]\T1/cmr/m/n/10 /home/alessio/Scrivania/Natali/telecomandoRobot/sema/src/pelic
-an/SemaphoreTest.java 
- []
-
-
-(/home/alessio/Scrivania/Natali/telecomandoRobot/sema/src/pelican/ControllerTes
-t.java
-Overfull \hbox (24.33405pt too wide) in paragraph at lines 15--16
-[][][][][][][][][][][][][][][][][][][]  
- []
-
-[5]
-Overfull \hbox (12.9967pt too wide) in paragraph at lines 23--24
-[][][][][][][][][][][][][][][][][][][]  
- []
-
-
-Overfull \hbox (30.00272pt too wide) in paragraph at lines 25--26
-[][][][][][][][][][][][][][][][][][][]  
- []
-
-
-Overfull \hbox (12.9967pt too wide) in paragraph at lines 30--31
-[][][][][][][][][][][][][][][][][][][]  
- []
-
-
-Overfull \hbox (30.00272pt too wide) in paragraph at lines 32--33
-[][][][][][][][][][][][][][][][][][][]  
- []
-
 )
-Overfull \hbox (45.25287pt too wide) in paragraph at lines 299--299
-[]\T1/cmr/m/n/10 /home/alessio/Scrivania/Natali/telecomandoRobot/sema/src/pelic
-an/ControllerTest.java 
+(/home/alessio/git/AttivitaProgettuale/ModelInterfaces/src/interfaces/RemoteDev
+ice.java)
+Overfull \hbox (46.64142pt too wide) in paragraph at lines 261--261
+[]\T1/cmr/m/n/10 /home/alessio/git/AttivitaProgettuale/ModelInterfaces/src/inte
+rfaces/RemoteDevice.java 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 308--311
-
- []
-
-[6]
-Underfull \hbox (badness 10000) in paragraph at lines 313--317
-
- []
-
-<img/SemaforoProgettazione.png, id=31, 772.8875pt x 1481.535pt>
-File: img/SemaforoProgettazione.png Graphic file (type png)
-
-<use img/SemaforoProgettazione.png>
-Package pdftex.def Info: img/SemaforoProgettazione.png used on input line 336.
-(pdftex.def)             Requested size: 312.40906pt x 598.84286pt.
- [7]
-Overfull \vbox (49.70459pt too high) has occurred while \output is active []
-
-
-[8 <./img/SemaforoProgettazione.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 341--343
-
+(/home/alessio/git/AttivitaProgettuale/it.unibo.iot.robot/src/it/unibo/iot/robo
+t/IRobot.java)
+Overfull \hbox (61.1101pt too wide) in paragraph at lines 267--267
+[]\T1/cmr/m/n/10 /home/alessio/git/AttivitaProgettuale/it.unibo.iot.robot/src/i
+t/unibo/iot/robot/IRobot.java 
  []
 
 
-Overfull \hbox (19.68272pt too wide) in paragraph at lines 349--364
-\T1/cmr/bx/n/10 maforo" \T1/cmr/m/n/10 de-scritta nell'analisi, per i metodi se
-t e get col-ore é stato us-ata l'integrazione
+(/home/alessio/git/AttivitaProgettuale/ModelInterfaces/src/interfaces/ICommandR
+eceiver.java [3])
+Overfull \hbox (69.58026pt too wide) in paragraph at lines 269--269
+[]\T1/cmr/m/n/10 /home/alessio/git/AttivitaProgettuale/ModelInterfaces/src/inte
+rfaces/ICommandReceiver.java 
  []
 
 
-Overfull \hbox (1.42804pt too wide) in paragraph at lines 349--364
-\T1/cmr/m/n/10 tra javascript e il DOM HTML me-di-ante il campo "Back-ground-Co
-lor" dei <div>. 
+(/home/alessio/git/AttivitaProgettuale/ModelInterfaces/src/interfaces/ILineFoll
+ower.java)
+Overfull \hbox (43.05896pt too wide) in paragraph at lines 271--271
+[]\T1/cmr/m/n/10 /home/alessio/git/AttivitaProgettuale/ModelInterfaces/src/inte
+rfaces/ILineFollower.java 
+ []
+
+(/home/alessio/git/AttivitaProgettuale/ModelInterfaces/src/test/MyIRobot.java
+[4])
+Overfull \hbox (4.26288pt too wide) in paragraph at lines 278--278
+[]\T1/cmr/m/n/10 /home/alessio/git/AttivitaProgettuale/ModelInterfaces/src/test
+/MyIRobot.java 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 349--364
+(/home/alessio/git/AttivitaProgettuale/ModelInterfaces/src/test/LineFollowerTes
+t.java)
+Overfull \hbox (33.08917pt too wide) in paragraph at lines 280--280
+[]\T1/cmr/m/n/10 /home/alessio/git/AttivitaProgettuale/ModelInterfaces/src/test
+/LineFollowerTest.java 
+ []
+
+
+(/home/alessio/git/AttivitaProgettuale/ModelInterfaces/src/test/RemoteDeviceTes
+t.java [5])
+Overfull \hbox (40.28186pt too wide) in paragraph at lines 281--281
+[]\T1/cmr/m/n/10 /home/alessio/git/AttivitaProgettuale/ModelInterfaces/src/test
+/RemoteDeviceTest.java 
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [6]
+<img/SequenceDiagram.png, id=30, 1062.97125pt x 568.1225pt>
+File: img/SequenceDiagram.png Graphic file (type png)
+
+<use img/SequenceDiagram.png>
+Package pdftex.def Info: img/SequenceDiagram.png used on input line 290.
+(pdftex.def)             Requested size: 347.12354pt x 185.5305pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 292--297
+
+ []
+
+[7 <./img/SequenceDiagram.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 310--311
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 349--364
+Overfull \hbox (3.32372pt too wide) in paragraph at lines 312--314
+[]\T1/cmr/bx/n/10 Command Re-ceiver --> lis-ten-er-Con-troller: \T1/cmr/m/n/10 
+project it.unibo.RobotServer 
+ []
+
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 330--331
 
  []
 
-[9] [10]
 
-LaTeX Warning: Citation `natMol09' on page 11 undefined on input line 383.
+Underfull \hbox (badness 10000) in paragraph at lines 332--334
 
-<img/foto_autore.jpg, id=46, 225.84375pt x 216.81pt>
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 335--338
+
+ []
+
+<img/LineFollower.png, id=39, 684.5575pt x 369.38pt>
+File: img/LineFollower.png Graphic file (type png)
+
+<use img/LineFollower.png>
+Package pdftex.def Info: img/LineFollower.png used on input line 339.
+(pdftex.def)             Requested size: 347.12354pt x 187.31041pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [9]
+Underfull \hbox (badness 10000) in paragraph at lines 351--352
+
+ []
+
+[10 <./img/LineFollower.png (PNG copy)>]
+<img/InteractionDiagram.png, id=46, 986.68625pt x 525.965pt>
+File: img/InteractionDiagram.png Graphic file (type png)
+
+<use img/InteractionDiagram.png>
+Package pdftex.def Info: img/InteractionDiagram.png used on input line 358.
+(pdftex.def)             Requested size: 347.12354pt x 185.03752pt.
+
+<img/PIDFinaleStateMachine.png, id=47, 863.225pt x 336.25626pt>
+File: img/PIDFinaleStateMachine.png Graphic file (type png)
+
+<use img/PIDFinaleStateMachine.png>
+Package pdftex.def Info: img/PIDFinaleStateMachine.png used on input line 365.
+(pdftex.def)             Requested size: 347.12354pt x 135.2133pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 371--373
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 374--375
+
+ []
+
+[11 <./img/InteractionDiagram.png> <./img/PIDFinaleStateMachine.png>]
+<img/evoluzione.png, id=53, 745.78625pt x 462.72874pt>
+File: img/evoluzione.png Graphic file (type png)
+
+<use img/evoluzione.png>
+Package pdftex.def Info: img/evoluzione.png used on input line 377.
+(pdftex.def)             Requested size: 347.12354pt x 215.3714pt.
+
+<img/geneticCalibration.png, id=54, 614.295pt x 331.2375pt>
+File: img/geneticCalibration.png Graphic file (type png)
+
+<use img/geneticCalibration.png>
+Package pdftex.def Info: img/geneticCalibration.png used on input line 382.
+(pdftex.def)             Requested size: 347.12354pt x 187.17479pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [12 <./img/evoluzione.png (PNG copy)>] [13 <./img/geneticCalibration.png (PNG 
+copy)>]
+<img/foto_autore.jpg, id=62, 225.84375pt x 216.81pt>
 File: img/foto_autore.jpg Graphic file (type jpg)
  <use img/foto_autore.jpg>
-Package pdftex.def Info: img/foto_autore.jpg used on input line 398.
+Package pdftex.def Info: img/foto_autore.jpg used on input line 419.
 (pdftex.def)             Requested size: 101.62874pt x 97.56358pt.
 
 No file LineFollowerReport.bbl.
-[11 <./img/foto_autore.jpg>] (./LineFollowerReport.aux)
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
- ) 
+[14 <./img/foto_autore.jpg>] (./LineFollowerReport.aux) ) 
 Here is how much of TeX's memory you used:
- 5236 strings out of 493308
- 66549 string characters out of 6140093
- 197842 words of memory out of 5000000
- 8631 multiletter control sequences out of 15000+600000
+ 5287 strings out of 493308
+ 67927 string characters out of 6140093
+ 202859 words of memory out of 5000000
+ 8669 multiletter control sequences out of 15000+600000
  10419 words of font info for 24 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 29i,11n,40p,660b,1672s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texmf/
-fonts/type1/public/cm-super/sfbx1000.pfb></usr/share/texmf/fonts/type1/public/c
-m-super/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb
-></usr/share/texmf/fonts/type1/public/cm-super/sfrm0500.pfb></usr/share/texmf/f
-onts/type1/public/cm-super/sfrm0900.pfb></usr/share/texmf/fonts/type1/public/cm
--super/sfrm1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sftt0900.pfb>
-</usr/share/texmf/fonts/type1/public/cm-super/sftt1000.pfb>
-Output written on LineFollowerReport.pdf (11 pages, 340918 bytes).
+ 29i,11n,39p,733b,1717s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/share/texmf/font
+s/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texmf/fonts/type1/public/cm-su
+per/sfbx1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1200.pfb></u
+sr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf/fonts
+/type1/public/cm-super/sfrm0500.pfb></usr/share/texmf/fonts/type1/public/cm-sup
+er/sfrm0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></us
+r/share/texmf/fonts/type1/public/cm-super/sftt0900.pfb>
+Output written on LineFollowerReport.pdf (14 pages, 434634 bytes).
 PDF statistics:
- 77 PDF objects out of 1000 (max. 8388607)
+ 90 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 41 words of extra memory for PDF output out of 10000 (max. 10000000)
 

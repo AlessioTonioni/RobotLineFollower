@@ -376,7 +376,7 @@ Before using a controller there must always be a phase of long testing to find t
 \begin{center}
   \makebox[\textwidth]{\includegraphics[width=\textwidth]{img/evoluzione.png}}
 \end{center}
-The genetic computation program starts from a population of individuals, in our case different combination of PID constants, and at each iteration gives at all of them a score, called fitness, based on how well they behave. From this population a new one is generated recombining the best current solutions and adding some random mutation, the new generation created should perform better than the one before and the iteration could restarts. After a certain number of iteration we should obtain a good individual among the population, so a good set of constants.\\
+The genetic computation program starts from a population of individual, in our case different combination of PID constants, and at each iteration gives at all of them a score, called fitness, based on how well they behave. From this population a new one is generated recombining the best current solution and adding some random mutation, the new generation created should perform better than the one before and the iteration restarts. After a certain number of iteration we should obtain a good individual, so a good set of constant.\\
 In order to implement this algorithm in the most general way possible the logic of population creation and score calculation are relegated to two external components: \textbf{IGenerator} and \textbf{IFitnessCalculator}. For example the implementation of IFitnessCalculator for the PID controller uses a simulator to get the score of each individual.
 \begin{center}
   \makebox[\textwidth]{\includegraphics[width=\textwidth]{img/geneticCalibration.png}}
