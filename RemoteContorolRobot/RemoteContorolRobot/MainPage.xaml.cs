@@ -61,8 +61,8 @@ namespace RemoteContorolRobot
         {
             joystick.IsEnabled = true;
             PID.IsEnabled = true;
-            Mono.IsEnabled = true;
-            Bi.IsEnabled = true;
+            State.IsEnabled = true;
+            PIDFinal.IsEnabled = true;
             SpeedSelector.IsEnabled = true;
             Forward.IsEnabled = true;
             Backward.IsEnabled = true;
@@ -74,8 +74,8 @@ namespace RemoteContorolRobot
         {
             joystick.IsEnabled = false;
             PID.IsEnabled = false;
-            Mono.IsEnabled = false;
-            Bi.IsEnabled = false;
+            State.IsEnabled = false;
+            PIDFinal.IsEnabled = false;
             SpeedSelector.IsEnabled = false;
             Forward.IsEnabled = false;
             Backward.IsEnabled = false;
@@ -108,14 +108,14 @@ namespace RemoteContorolRobot
             _controller.setControllerType("PID");
         }
 
-        private void Bi_Checked(object sender, RoutedEventArgs e)
+        private void PIDFinale_Checked(object sender, RoutedEventArgs e)
         {
-            _controller.setControllerType("StateBiLine");
+            _controller.setControllerType("PIDFinale");
         }
 
-        private void Mono_Checked(object sender, RoutedEventArgs e)
+        private void State_Checked(object sender, RoutedEventArgs e)
         {
-            _controller.setControllerType("StateMonoLine");
+            _controller.setControllerType("StateBiLine");
         }
 
         private void Forward_Checked(object sender, RoutedEventArgs e)

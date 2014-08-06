@@ -59,9 +59,9 @@
 
                     <StackPanel Grid.Row="1">
                         <StackPanel  Orientation="Horizontal" HorizontalAlignment="Center" >
-                            <RadioButton Name="PID" Content="PID" GroupName="ControllerType" Checked="PID_Checked" IsChecked="True" />
-                            <RadioButton Name="Mono" Content="Mono" GroupName="ControllerType" Checked="Mono_Checked"/>
-                            <RadioButton Name="Bi" Content="Bi" GroupName="ControllerType" Checked="Bi_Checked"/>
+                            <RadioButton Name="State" Content="State" GroupName="ControllerType" Checked="State_Checked" IsChecked="True" />
+                            <RadioButton Name="PID" Content="PID" GroupName="ControllerType" Checked="PID_Checked"/>
+                            <RadioButton Name="PIDFinal" Content="PIDFinal" GroupName="ControllerType" Checked="PIDFinale_Checked"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
