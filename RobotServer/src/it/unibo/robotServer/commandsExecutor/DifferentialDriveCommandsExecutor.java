@@ -69,6 +69,7 @@ public class DifferentialDriveCommandsExecutor implements ICommandsExecutor {
 			IErrorUpdater e=new TwoLineSensorErrorUpdater();
 			e.configure(Configurator.getConfiguration());
 			controller=new PIDLineFollowerControllerFinale( e, c);
+			((PIDLineFollowerControllerFinale)controller).configure("costanti.txt");
 			break;
 		default:
 			return;	
