@@ -192,7 +192,6 @@ At any given moment during the execution of the controller new commands could be
 %===========================================================================
 \subsection{Use cases}
 \labelssec{UseCases}
-The use cases are this:
 \begin{center}
   \makebox[\textwidth]{\includegraphics[width=\textwidth]{img/PIDUseCases.png}}
 \end{center}
@@ -200,7 +199,7 @@ The use cases are this:
 %===========================================================================
 \subsection{Scenarios}
 \labelssec{Scenarios}
-\textbf{ExecuteCommand:}
+\textbf{ExecuteCommand:}\\
 Actor: robot\\
 Post-condition: the robot is executing a command.\\
 \\
@@ -209,8 +208,8 @@ Main scenario:
 	\item The robot is asked to execute a simple command
 	\item The robot starts to execute the command and continues till a new one is executed
 \end{itemize}
-
-\textbf{MakeRobotFollowLine:}
+ 
+\noindent{\textbf{MakeRobotFollowLine:}}\\
 Actor: Line follower controller\\
 Post-condition: the robot is moving autonomously and it's following a line on the floor\\
 Main scenario:
@@ -219,7 +218,7 @@ Main scenario:
 	\item The robot starts to follow the line and continues till a new command are requested
 \end{itemize}
 
-\textbf{ReceiveCommand:}
+\noindent{\textbf{ReceiveCommand:}}\\
 Actor: remote controller\\
 Pre-condition: the remote controller knows how to communicate with the robot\\
 Post-condition: the robot executes the command sent.\\
@@ -256,11 +255,12 @@ Main scenario:
 
 \subsection{(Domain)model}
 The domain it's made of at least two physically separated macro entity:\\
-\textbf{Remote-device:}\\
+
+\noindent{\textbf{Remote-device:}}\\
 Entity capable of connect in some way to the robot and send it command, it could be formalized with this interface.
 \lstinputlisting[language=Java,basicstyle=\small\ttfamily,breaklines=true,showtabs=false,showspaces=false,breakatwhitespace=true]{/home/alessio/git/AttivitaProgettuale/ModelInterfaces/src/interfaces/RemoteDevice.java}
 
-\textbf{Robot:}\\
+\noindent{\textbf{Robot:}}\\
 The physical entity robot could be decomposed in three sub-system:
 \begin{itemize}
 	\item \textbf{Executor:} interpret of commands already realized, it could be formalized with the given interface:
@@ -270,11 +270,11 @@ The physical entity robot could be decomposed in three sub-system:
 	\item \textbf{Line follower:} entity that when started takes control of a robot with the purpose of making it follow a line on the ground, it must be stopped when requested from the outside and should be able to communicate with the sensors on the robot. If possible this component should be reusable across different robots or sensors configuration. It could be formalized with this interface:
 		\lstinputlisting[language=Java,basicstyle=\small\ttfamily,breaklines=true,showtabs=false,showspaces=false,breakatwhitespace=true]{/home/alessio/git/AttivitaProgettuale/ModelInterfaces/src/interfaces/ILineFollower.java}
 \end{itemize}
-This three entities could be active at the same time: the "Command Receiver", for example, is always listening for incoming messages, also while the robot it's executing a command or the controller is following a line. The three sub-systems are all inside the robot system because "executor" and "line follower" must communicate with external device on board on the robot: engine and sensors respectively; Command receiver instead must communicate with executor.
+This three entities could be active at the same time: the "Command Receiver", for example, is always listening for incoming messages meanwhile the robot is executing a command or the controller is following a line. The three sub-systems are all inside the robot system because "executor" and "line follower" must communicate with external device on board on the robot: engine and sensors respectively; Command receiver instead must communicate with executor.
 
 %==========================================================================
 \subsection{Test plan}
-In order to introduce automatic test case a modified robot must be modelled:
+In order to introduce automatic test cases a modified robot must be modelled:
 \lstinputlisting[language=Java,basicstyle=\small\ttfamily,breaklines=true,showtabs=false,showspaces=false,breakatwhitespace=true]{/home/alessio/git/AttivitaProgettuale/ModelInterfaces/src/test/MyIRobot.java}
 Now the interface of the model can be tested:
 \lstinputlisting[language=Java,basicstyle=\small\ttfamily,breaklines=true,showtabs=false,showspaces=false,breakatwhitespace=true]{/home/alessio/git/AttivitaProgettuale/ModelInterfaces/src/test/LineFollowerTest.java}
@@ -289,18 +289,19 @@ The software system is composed of at least two physically separated entities th
 \begin{center}
   \makebox[\textwidth]{\includegraphics[width=\textwidth]{img/SequenceDiagram.png}}
 \end{center}
-All the messages are asynchronous, the content of the message between r"emote device" and "Command receiver" should conform to a certain grammar in order to make the communication possible.\\
+All the messages are asynchronous, the content of the message between "Remote device" and "Command receiver" should conform to a certain grammar in order to make the communication possible.\\
 The messages directed to the "executor" should conform to the given IRobot interface, for example each message could correspond to a proper call of the "execute()" method of the IRobot.\\
-The messages of start and stop from the "command receiver" to the "line follower" could be seen as creation and destruction of the "line follower", furthermore it must be able to receive incoming messages from the sensors so it must communicate with them.\\
+The messages of start and stop from the "command receiver" to the "line follower" could be seen as creation and destruction of the "line follower", furthermore this follower must be able to receive incoming messages from the sensors so it must communicate with them.\\
 As seen all the interaction between the remote device and the robot system are transmitted through the "command receiver" that it's the only point of communication between the robot system and the outside world, the communication is mono directional, so there are no feedbacks from the robot on the correct execution of the requested action.\\
-The sensors' feedbacks are produced independently from the rest of the system, this type of message it's synchronous and it's already implemented using an observer pattern to be notified when new measurement are available.\\
+The sensors' feedbacks are produced independently from the rest of the system, this type of messages are asynchronous and are already implemented using an observer pattern to be notified when new measurement are available.\\
 
-From this representation we can see that the "executor" is a completely passive entity capable only of execute commands when requested, instead the "line follower" is an active entity with a limited life span that could be created and destroyed at any given time, at this level of abstraction we are not interested on how the controller does it's job, the only thing it must guarantee it is that when activated the robot start to follow the line. The "Command receiver" is an interpret that translate the request of the remote device in command for the "executor" and the "line follower", it must be created at the startup of the system and must remain active till the system it's turned off.\\
-Every "command receiver" must have an unique identifier so that a remote device can only send message to a specific one. In this architecture it's possible that more than one remote devices send messages to the same command receiver, in this case there's no priority and the execution of the messages it's FIFO. 
+From this representation we can see that the "executor" is a completely passive entity capable only of execute commands when requested, instead the "line follower" is an active entity with a limited life span that could be created and destroyed at any given time, at this level of abstraction we are not interested on how the controller does it's job, the only thing it must guarantee is that when activated the robot start to follow the line. The "Command receiver" is an interpret that translate the request of the remote device in command for the "executor" and the "line follower", it must be created at the startup of the system and must remain active till the system is turned off.\\
+Every "command receiver" must have an unique identifier so that a remote device can only send message to a specific one. In this architecture is possible that more than one remote devices send messages to the same command receiver, in this case there's no priority and the execution of the messages is FIFO. 
 
 \subsection{Abstraction gap}
-The infrastructure to control the robot engines and sensors it's already developed, so there should be no problem for the interaction with physical devices. The communication between the entities could be implemented using standard tcp/ip protocol in order to be cross platform and scalable. The main abstraction gap it's the absence of a way to tune the line follower controller for a certain robot in a fully automated way. Some experimental approach using genetic computation will be presented later, but the result are still not perfect.    
+The infrastructure to control the robot engines and sensors is already developed, so there should be no problem for the interaction with physical devices. The communication between the entities could be implemented using standard tcp/ip protocol in order to be cross platform and scalable. The main abstraction gap is the absence of a way to tune the line follower controller for a certain robot in a fully automated way. Some experimental approach using genetic computation will be presented later, but the result are still not perfect.    
 
+\newpage
 %===========================================================================
 \section{Project}
 \labelsec{Project}
@@ -309,8 +310,8 @@ The infrastructure to control the robot engines and sensors it's already develop
 \subsection{Structure}
 The overall structure of the system conform to the one presented in the logic architecture part, however there's some little clarification on how the single entities are implemented.\\
 
-\textbf{Command Receiver --> listenerController:} project it.unibo.RobotServer\\
-To achieve the maximum independence from the technology used in different systems, the command receiver is realized as a simple tcp server, and the message are so composed:
+\noindent{\textbf{Command Receiver --> listenerController:} project it.unibo.RobotServer}\\
+To achieve the maximum independence from the technology used in different systems, the command receiver is realized as a simple tcp server, and the messages are so composed:
 \begin{itemize}
 	\item 1 byte for the size of the message
 	\item A string encoded using UTF-8 standard
@@ -327,19 +328,19 @@ CNTTYPE: "PID" | "StateBiLine" | "StateMonoLine" | "PIDFinale"
 SPEED: integer between [0,100]
 FORWARD: "true"|"false"
 \end{lstlisting}
-The "command receiver" uses an external component, implementation of \textbf{ICommandExecutor}, to make the physical robot execute commands or to start the "line follower" controller, in this way some part of the server it's reusable for different physical robot.\\
+The "command receiver" uses an external component, implementation of \textbf{ICommandExecutor}, to make the physical robot execute commands or to start the "line follower" controller, in this way some parts of the server are reusable for different physical robot.\\
 
-\textbf{Remote Device:} project RemoteControlRobot\\
-For testing purpose the remote device it's implemented as a simple Windows phone app, the only thing it must do it's to connect to the tcp server on the robot and send to it message composed as described above.\\
+\noindent{\textbf{Remote Device:} project RemoteControlRobot\\}
+For testing purpose the remote device is implemented as a simple Windows phone app, the only thing it must do is to connect to the tcp server on the robot and send to it message composed as described above.\\
 
-\textbf{LineFollower --> ILineFollower} project it.unibo.lineFollower\\
+\noindent{\textbf{LineFollower --> ILineFollower} project it.unibo.lineFollower}\\
 This component must be able to control autonomously the robot but at the same time must be stoppable, for this reason the ILineFollower interface extends Runnable so every controller can be instantiated as a thread that iteratively calculates the corrective commands to make the robot follow a line till someone kills it using the method terminate().\\
-The core of the project it's the implementation of the ILineFollower interface, after some tests with different solutions the final implementation uses a PID controller to calculate the correction, an external \textbf{IErrorUpdater} to keep track of the current tracking error of the robot using a specific sensors configuration and an external \textbf{ICommandExecutor} to make the robot able to physically execute the corrective commands.  \\
+The core of the project is the implementation of the ILineFollower interface, after some tests with different solutions the final implementation uses a PID controller to calculate the correction, an external \textbf{IErrorUpdater} to keep track of the current tracking error of the robot using a specific sensors configuration and an external \textbf{ICommandExecutor} to make the robot able to physically execute the corrective commands.  \\
 \begin{center}
   \makebox[\textwidth]{\includegraphics[width=\textwidth]{img/LineFollower.png}}
 \end{center}
 
-The error calculated from an implementation of \textbf{IErrorUpdater} must be an integer between [-100,100] where 0 means no error, -100 totally wrong on the left and +100 totally wrong on the right. Through this measure of the error the \textbf{PID} controller generates another integer which represents the correction that must be applied to the robot to make it return on the correct track, it's now the turn of the \textbf{ICommandExecutor} to take this integer and translate it in command that the robot it's capable of execute.\\
+\noindent The error calculated from an implementation of \textbf{IErrorUpdater} must be an integer between [-100,100] where 0 means no error, -100 totally wrong on the left and +100 totally wrong on the right. Through this measure of the error the \textbf{PID} controller generates another integer which represents the correction that must be applied to the robot to make it return on the correct track, is now the turn of the \textbf{ICommandExecutor} to take this integer and translate it in command that the robot is capable of execute.\\
 The behavior of the PID controller depends not only on the IErrorUpdater that generates the error, but also on 3 constants (Proportional-Integral-Derivative) that are sets with the two configure() method, good constants can make the controller more reactive and less prone to error.\\
 Every constant has a specific role:
 \begin{itemize}
@@ -348,7 +349,7 @@ Every constant has a specific role:
 	\item \textbf{Derivative: } higher values make the controller react faster when the errors happen.
 \end{itemize}
 
-Using this structure the controller can be reused with any sets of sensors or robot and to perform several different tasks, for example it could be used to run a robot inside an aisle just creating different implementation of the IErrorUpdater.\\
+\noindent Using this structure the controller can be reused with any sets of sensors or robot and to perform several different tasks, for example it could be used to run a robot inside an aisle just creating different implementation of the IErrorUpdater.\\
 
 \subsection{Interaction}
 The communication between the remote device and the command executor is realized using standard tcp socket. Tcp is preferred over udp because ensure the correct order of arrival of the commands.\\
@@ -366,17 +367,19 @@ The overall behavior of the pid controller follow this state machine
 \end{center}
 
 %===========================================================================
+\newpage
 \section{Implementation}
 \labelsec{Implementation}
-Given the overall structure the implementation it's quite simple and does not presents difficult point.  
-As said above the structure it's very reusable because of it's modular and adaptable, but it must be properly \textbf{tuned} before starting. Tuning corresponds to properly sets the 3 constants of the PID controller in order to make it able to control a specific robot.\\
+Given the overall structure the implementation is quite simple and does not presents difficult point.  
+As said above the structure is very reusable because of the modularity and adaptability, but it must be properly \textbf{tuned} before starting. Tuning corresponds to properly sets the 3 constants of the PID controller in order to make it able to control a specific robot.\\
 
-Before using a controller there must always be a phase of long testing to find the proper constant for the robot and the sensors' configuration. In order to try to automatize this task is been tested a method based on Evolutionary computation: using a simulator and a lot of iterations we try to find the best possible constants to control that particular simulated robot. The more the simulated robot behavior it's close to the real one the more this technique can be useful. \\
+\noindent Before using a controller there must always be a phase of long testing to find the proper constant for the robot and the sensors' configuration. In order to try to automatize this task is been tested a method based on Evolutionary computation: using a simulator and a lot of iterations we try to find the best possible constants to control that particular simulated robot. The more the simulated robot behavior is close to the real one the more this technique can be useful. \\
 
 \begin{center}
   \makebox[\textwidth]{\includegraphics[width=\textwidth]{img/evoluzione.png}}
 \end{center}
-The genetic computation program starts from a population of individuals, in our case different combination of PID constants, and at each iteration gives at all of them a score, called fitness, based on how well they behave. From this population a new one is generated recombining the best current solutions and adding some random mutation, the new generation created should perform better than the one before and the iteration could restarts. After a certain number of iteration we should obtain a good individual among the population, so a good set of constants.\\
+
+\noindent The genetic computation program starts from a population of individuals, in our case different combination of PID constants, and at each iteration gives at all of them a score, called fitness, based on how well they behave. From this population a new one is generated recombining the best current solutions and adding some random mutation, the new generation created should perform better than the one before and the iteration could restarts. After a certain number of iteration we should obtain a good individual among the population, so a good set of constants.\\
 In order to implement this algorithm in the most general way possible the logic of population creation and score calculation are relegated to two external components: \textbf{IGenerator} and \textbf{IFitnessCalculator}. For example the implementation of IFitnessCalculator for the PID controller uses a simulator to get the score of each individual.
 \begin{center}
   \makebox[\textwidth]{\includegraphics[width=\textwidth]{img/geneticCalibration.png}}

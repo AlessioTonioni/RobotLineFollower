@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.5.8)  5 AUG 2014 13:29
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.5.8)  2 SEP 2014 13:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -661,25 +661,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 176--178
 
  []
 
+<img/PIDUseCases.png, id=1, 823.075pt x 291.0875pt>
+File: img/PIDUseCases.png Graphic file (type png)
+ <use img/PIDUseCases.png>
+Package pdftex.def Info: img/PIDUseCases.png used on input line 196.
+(pdftex.def)             Requested size: 347.12354pt x 122.76225pt.
+
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-<img/PIDUseCases.png, id=9, 823.075pt x 291.0875pt>
-File: img/PIDUseCases.png Graphic file (type png)
- <use img/PIDUseCases.png>
-Package pdftex.def Info: img/PIDUseCases.png used on input line 197.
-(pdftex.def)             Requested size: 347.12354pt x 122.76225pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 203--208
+Underfull \hbox (badness 10000) in paragraph at lines 202--207
 
  []
 
 
-Overfull \hbox (5.59996pt too wide) in paragraph at lines 238--253
+Overfull \hbox (5.59996pt too wide) in paragraph at lines 237--252
  [] 
  []
 
 [2 <./img/PIDUseCases.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 257--258
+
+ []
+
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2013/08/26 1.5b listings language file
 )
@@ -698,9 +702,9 @@ Overfull \hbox (61.1101pt too wide) in paragraph at lines 267--267
 t/unibo/iot/robot/IRobot.java 
  []
 
-
+[3]
 (/home/alessio/git/AttivitaProgettuale/ModelInterfaces/src/interfaces/ICommandR
-eceiver.java [3])
+eceiver.java)
 Overfull \hbox (69.58026pt too wide) in paragraph at lines 269--269
 []\T1/cmr/m/n/10 /home/alessio/git/AttivitaProgettuale/ModelInterfaces/src/inte
 rfaces/ICommandReceiver.java 
@@ -752,43 +756,34 @@ Underfull \hbox (badness 10000) in paragraph at lines 292--297
 
  []
 
-[7 <./img/SequenceDiagram.png>]
-Underfull \hbox (badness 10000) in paragraph at lines 310--311
+[7 <./img/SequenceDiagram.png>] [8]
+Underfull \hbox (badness 10000) in paragraph at lines 311--312
 
  []
 
 
-Overfull \hbox (3.32372pt too wide) in paragraph at lines 312--314
-[]\T1/cmr/bx/n/10 Command Re-ceiver --> lis-ten-er-Con-troller: \T1/cmr/m/n/10 
-project it.unibo.RobotServer 
- []
-
-[8]
-Underfull \hbox (badness 10000) in paragraph at lines 330--331
+Underfull \hbox (badness 10000) in paragraph at lines 331--332
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 332--334
+Underfull \hbox (badness 10000) in paragraph at lines 333--335
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 335--338
+Underfull \hbox (badness 10000) in paragraph at lines 336--339
 
  []
 
-<img/LineFollower.png, id=39, 684.5575pt x 369.38pt>
+[9] <img/LineFollower.png, id=42, 684.5575pt x 369.38pt>
 File: img/LineFollower.png Graphic file (type png)
 
 <use img/LineFollower.png>
-Package pdftex.def Info: img/LineFollower.png used on input line 339.
+Package pdftex.def Info: img/LineFollower.png used on input line 340.
 (pdftex.def)             Requested size: 347.12354pt x 187.31041pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [9]
-Underfull \hbox (badness 10000) in paragraph at lines 351--352
+Underfull \hbox (badness 10000) in paragraph at lines 352--353
 
  []
 
@@ -797,48 +792,44 @@ Underfull \hbox (badness 10000) in paragraph at lines 351--352
 File: img/InteractionDiagram.png Graphic file (type png)
 
 <use img/InteractionDiagram.png>
-Package pdftex.def Info: img/InteractionDiagram.png used on input line 358.
+Package pdftex.def Info: img/InteractionDiagram.png used on input line 359.
 (pdftex.def)             Requested size: 347.12354pt x 185.03752pt.
 
 <img/PIDFinaleStateMachine.png, id=47, 863.225pt x 336.25626pt>
 File: img/PIDFinaleStateMachine.png Graphic file (type png)
 
 <use img/PIDFinaleStateMachine.png>
-Package pdftex.def Info: img/PIDFinaleStateMachine.png used on input line 365.
+Package pdftex.def Info: img/PIDFinaleStateMachine.png used on input line 366.
 (pdftex.def)             Requested size: 347.12354pt x 135.2133pt.
-
-Underfull \hbox (badness 10000) in paragraph at lines 371--373
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 374--375
+ [11 <./img/InteractionDiagram.png> <./img/PIDFinaleStateMachine.png>]
+Underfull \hbox (badness 10000) in paragraph at lines 373--375
 
  []
 
-[11 <./img/InteractionDiagram.png> <./img/PIDFinaleStateMachine.png>]
+
+Underfull \hbox (badness 10000) in paragraph at lines 376--377
+
+ []
+
 <img/evoluzione.png, id=53, 745.78625pt x 462.72874pt>
 File: img/evoluzione.png Graphic file (type png)
 
 <use img/evoluzione.png>
-Package pdftex.def Info: img/evoluzione.png used on input line 377.
+Package pdftex.def Info: img/evoluzione.png used on input line 379.
 (pdftex.def)             Requested size: 347.12354pt x 215.3714pt.
-
-<img/geneticCalibration.png, id=54, 614.295pt x 331.2375pt>
+ [12 <./img/evoluzione.png (PNG copy)>]
+<img/geneticCalibration.png, id=57, 614.295pt x 331.2375pt>
 File: img/geneticCalibration.png Graphic file (type png)
 
 <use img/geneticCalibration.png>
-Package pdftex.def Info: img/geneticCalibration.png used on input line 382.
+Package pdftex.def Info: img/geneticCalibration.png used on input line 385.
 (pdftex.def)             Requested size: 347.12354pt x 187.17479pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [12 <./img/evoluzione.png (PNG copy)>] [13 <./img/geneticCalibration.png (PNG 
-copy)>]
-<img/foto_autore.jpg, id=62, 225.84375pt x 216.81pt>
+ [13 <./img/geneticCalibration.png (PNG copy)>] <img/foto_autore.jpg, id=62, 22
+5.84375pt x 216.81pt>
 File: img/foto_autore.jpg Graphic file (type jpg)
- <use img/foto_autore.jpg>
-Package pdftex.def Info: img/foto_autore.jpg used on input line 419.
+
+<use img/foto_autore.jpg>
+Package pdftex.def Info: img/foto_autore.jpg used on input line 422.
 (pdftex.def)             Requested size: 101.62874pt x 97.56358pt.
 
 No file LineFollowerReport.bbl.
@@ -846,11 +837,11 @@ No file LineFollowerReport.bbl.
 Here is how much of TeX's memory you used:
  5287 strings out of 493308
  67927 string characters out of 6140093
- 202859 words of memory out of 5000000
+ 202846 words of memory out of 5000000
  8669 multiletter control sequences out of 15000+600000
  10419 words of font info for 24 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 29i,11n,39p,733b,1717s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 29i,11n,39p,728b,1659s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/font
 s/enc/dvips/cm-super/cm-super-t1.enc}</usr/share/texmf/fonts/type1/public/cm-su
 per/sfbx1000.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1200.pfb></u
@@ -858,7 +849,7 @@ sr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf/fonts
 /type1/public/cm-super/sfrm0500.pfb></usr/share/texmf/fonts/type1/public/cm-sup
 er/sfrm0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1000.pfb></us
 r/share/texmf/fonts/type1/public/cm-super/sftt0900.pfb>
-Output written on LineFollowerReport.pdf (14 pages, 434634 bytes).
+Output written on LineFollowerReport.pdf (14 pages, 434593 bytes).
 PDF statistics:
  90 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
