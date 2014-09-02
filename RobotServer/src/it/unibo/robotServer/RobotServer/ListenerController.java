@@ -41,6 +41,7 @@ public class ListenerController {
 	 */
 	public void doJob() throws IOException, InterruptedException{
 		cmdReceiver=master.accept();
+		System.out.println("Pronto a partire...");
 		cmdStream=new DataInputStream(cmdReceiver.getInputStream());
 		while(true){
 			int dim=cmdStream.read();

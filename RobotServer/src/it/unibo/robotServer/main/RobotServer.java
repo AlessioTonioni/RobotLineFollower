@@ -45,7 +45,6 @@ public class RobotServer {
 		/*s.terminate();
 		shouterThread.join();
 		System.out.println("Shout terminato, pronto a ricevere comandi");*/
-		System.out.println("Pronto a partire...");
 		controller.doJob();
 	}
 }

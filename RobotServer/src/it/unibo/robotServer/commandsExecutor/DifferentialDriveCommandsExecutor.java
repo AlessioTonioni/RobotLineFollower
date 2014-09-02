@@ -16,6 +16,7 @@ import it.unibo.lineFollower.controller.PIDLineFollowerControllerFinale;
 import it.unibo.lineFollower.controller.StateMachineBiLineFollowerController;
 import it.unibo.lineFollower.controller.StateMachineMonoLineFollowerController;
 import it.unibo.lineFollower.errorUpdater.IErrorUpdater;
+import it.unibo.lineFollower.errorUpdater.ThreeSensorErrorUpdater;
 import it.unibo.lineFollower.errorUpdater.TwoLineSensorErrorUpdater;
 import it.unibo.robotServer.messages.controllerType;
 
@@ -66,7 +67,7 @@ public class DifferentialDriveCommandsExecutor implements ICommandsExecutor {
 			break;
 		case PIDFinale:
 			ICommandTranslator c=new DDCommandTranslator(getSpeed(speed).getNumValue(),Boolean.parseBoolean(isForward),robot);
-			IErrorUpdater e=new TwoLineSensorErrorUpdater();
+			IErrorUpdater e=new ThreeSensorErrorUpdater();
 			e.configure(Configurator.getConfiguration());
 			controller=new PIDLineFollowerControllerFinale( e, c);
 			((PIDLineFollowerControllerFinale)controller).configure("costanti.txt");
