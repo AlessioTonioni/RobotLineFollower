@@ -136,8 +136,8 @@
 
 \begin{document}
 
-\title{Attività progettuale di ingegneria dei sistemi software\\
- progetto "Line follower"}
+\title{Project activity of systems engineering software\\
+ Project "Line follower"}
 
 %%% \author{\xauthA \and \xauthB}
 \author{\xauthA}
@@ -173,14 +173,14 @@ The development of the controller should be fully automatable given the fundamen
 %===========================================================================
 \section{Goals}
 \labelsec{Goals}
-Realize an independent controller to make a robot able to follow a line on the ground.\\ 
+Realize a piece of software capable of making a robot able to follow a line on the ground. Furthermore this program must be reusable and extensible in future development. \\ 
 %===========================================================================
 
 %===========================================================================
 \section{Requirements}
 \labelsec{Requirements}
 Realize an independent controller to make a robot able to follow a line on the ground perceptible with on-board sensors.\\
-Normally the robot it's remote-controlled from a remote device, but when requested the line's follower takes the control of the robot and drives it till new command are given. \\
+Normally the robot is remote-controlled from a remote device, but when requested the line's follower takes the control of the robot and drives it till new commands are given. \\
 At any given moment during the execution of the controller new commands could be sent from the remote device, when this happen the controller stop working and the robot must returns to remote-controlled only.
 %===========================================================================
 
@@ -299,7 +299,7 @@ From this representation we can see that the "executor" is a completely passive 
 Every "command receiver" must have an unique identifier so that a remote device can only send message to a specific one. In this architecture is possible that more than one remote devices send messages to the same command receiver, in this case there's no priority and the execution of the messages is FIFO. 
 
 \subsection{Abstraction gap}
-The infrastructure to control the robot engines and sensors is already developed, so there should be no problem for the interaction with physical devices. The communication between the entities could be implemented using standard tcp/ip protocol in order to be cross platform and scalable. The main abstraction gap is the absence of a way to tune the line follower controller for a certain robot in a fully automated way. Some experimental approach using genetic computation will be presented later, but the result are still not perfect.    
+The infrastructure to control the robot engines and sensors is already developed, so there should be no problem for the interaction with physical devices. The communication between the entities could be implemented using standard tcp/ip protocol in order to be cross platform and scalable. The main abstractions gap are the inability to control directly the engine of the robot in order to achieve a higher precision when following a line and the absence of a way to tune the line follower controller for a certain robot in a fully automated way. Some experimental approach using genetic computation will be presented later, but the result are still not perfect.    
 
 \newpage
 %===========================================================================
@@ -333,23 +333,49 @@ The "command receiver" uses an external component, implementation of \textbf{ICo
 \noindent{\textbf{Remote Device:} project RemoteControlRobot\\}
 For testing purpose the remote device is implemented as a simple Windows phone app, the only thing it must do is to connect to the tcp server on the robot and send to it message composed as described above.\\
 
+\newpage
 \noindent{\textbf{LineFollower --> ILineFollower} project it.unibo.lineFollower}\\
-This component must be able to control autonomously the robot but at the same time must be stoppable, for this reason the ILineFollower interface extends Runnable so every controller can be instantiated as a thread that iteratively calculates the corrective commands to make the robot follow a line till someone kills it using the method terminate().\\
-The core of the project is the implementation of the ILineFollower interface, after some tests with different solutions the final implementation uses a PID controller to calculate the correction, an external \textbf{IErrorUpdater} to keep track of the current tracking error of the robot using a specific sensors configuration and an external \textbf{ICommandExecutor} to make the robot able to physically execute the corrective commands.  \\
+This component must be able to control autonomously the robot but at the same time must be stoppable, for this reason the ILineFollower interface extends Runnable so every controller can be instantiated as a thread that iteratively calculates the corrective commands to make the robot follow a line till someone kills it using the method terminate().\\ 
+The controller works above the Robot so the rebot isn't aware of following a line.\\
+The core of the project is the implementation of the ILineFollower interface for this reason a lot of different possibilities were considered during the development. The aim of this component is to make the robot able to travel inside two lines that act like barrier to delimit the correct track and to make the motion of the robot as smooth as possible: if it's possible the robot must not stop but always continue along its path applying the littlest possible correction.\\
+The robot at the user level of abstraction was capable only of execute an "IRobotCommand" so only a limited set of movements were possible, for this reason the first instance of controller was a simple state machine that applies a corrective command according to the data from the sensors. The behavior of the component could be pictured with this schema.
+\begin{center}
+  \makebox[\textwidth]{\includegraphics[width=\textwidth]{img/LineFollowerStateMachine.png}}
+\end{center}
+\noindent This component is fully reactive and change its state only when new data are sent from the sensors, so it is not aware of the time and from how long the robot is traveling in the wrong direction. However the results were not really good: the robot tends to react slowly and without sufficient effort so it easily losts the right path.
+
+From this first experiment it appears necessary to modify the interface "IRobot" to have a direct control of the robot's motors in order to perform all the possible corrective command. A new interface is defined: "IDifferentialDriveRobot" that extends "IRobot" and adds a method to control the robot via "IWheelCommand" so giving the speed of each of the robot's wheel.
+\lstinputlisting[language=Java,basicstyle=\small\ttfamily,breaklines=true,showtabs=false,showspaces=false,breakatwhitespace=true]{/home/alessio/git/AttivitaProgettuale/it.unibo.iot.robot/src/it/unibo/iot/robot/IDifferentialDriveRobot.java}
+\noindent With this new interface we  have full control on the robot, so different degrees of correction can be applied in different situation. Now we need a component capable of determine the effort of the corrective action from the sensors data and the time, a simple state machine is not enough, something more expressive and modular is needed.\\
+Based on previous knowledge arising from the course of automatic controls an experimental solution was developed using a standard PID controller.\\
+A PID is a standard type of closed chain controller that is used to control autonomous system, it calculates an error value as the difference between a measured process variable and a desired setpoint. The controller attempts to minimize the error by adjusting the process through use of a set of manipulated variable. For more information see Bibliography.\\
+In the implementation for the line following the setpoint is 0 and the error ("tracking error") indicates whether the robot is careening to the right or left from the ideal track. The controller is constantly looping so has knowledge of the time in the form of number of consecutive iterations.\\
+The behavior of the controller can be pictured as follow:
+\begin{center}
+  \makebox[\textwidth]{\includegraphics[width=\textwidth]{img/PIDStateMachine.png}}
+\end{center}
+\noindent The tracking error as said above is obtained from the sensor's data and the corrective command is a certain "IWheelCommand", the core of the controller is the "calculate correction" that calculate the right effort of the corrective command based on the current error and the past history. More specifically the effort is obtained from the current error (CE), the derivative of the error (DE) and the integral of the error (IE) multiplied by the respective constants (named: P,I,D). The correction is obtained as follow:\\
+\begin{center}
+$ Correction = P*CE + I*IE + D*DE $\\
+\end{center}
+and is then translated in a variation on the default speed for the wheel of the robot, so in a new "IWheelCommand", that remain in execution till the next loop of the controller is completed.\\
+A PID controller can be seen as the union of three different controllers: Proportional, Integral and Derivative that corresponds to the three constants said above. Every controller has a specific role:
+\begin{itemize}
+	\item \textbf{Proportional: } higher values of the constant make the controller react more strongly to errors. It's the basic controller, when there's a error try to fix it with a proportional effort.
+	\item \textbf{Integral: } higher values of the constant make the controller react more strongly when errors are presents from long time. In combination with the other is used to obtain a smoother drive for the robot.
+	\item \textbf{Derivative: } higher values of the constant make the controller react faster when the errors happen. Is useful when we want a controller that react quickly when an error appear. 
+\end{itemize}
+\noindent The controller PID is therefore very modular because it is possible to use only some of the three components by setting the related constants to 0, for example we can obtain a fully proportional controller setting I and D to 0.\\
+The aim of this type of controller is to complete a loop as fast as possible in order to calculate always the best turn based on fresh data, but this can be a problem if the controller works faster than the actuators, so a modular delay can be introduced between each iteration in order to manipulate how the controller behave.\\
+This behavior can be implemented as a simple "main" program and works really well as long as the controller is properly tuned with the three constants, but is not extensible or reusable: if the sensor configuration or the robot change, everything must be rewritten.\\
+The first thing to do was to remove the three constants and the delay time from the code and put them in an external file, so they can be easily changed without the need to stop the robot and deploy a new jar. Then a new architecture for the controller was developed based on the principle of the separation of the responsibility: the communication with the sensors and the command execution were decoupled from the controller loop and assigned to two independent pieces of software described by the \textbf{IErrorUpdater} and \textbf{ICommandExecutor} interfaces respectively.
 \begin{center}
   \makebox[\textwidth]{\includegraphics[width=\textwidth]{img/LineFollower.png}}
 \end{center}
 
-\noindent The error calculated from an implementation of \textbf{IErrorUpdater} must be an integer between [-100,100] where 0 means no error, -100 totally wrong on the left and +100 totally wrong on the right. Through this measure of the error the \textbf{PID} controller generates another integer which represents the correction that must be applied to the robot to make it return on the correct track, is now the turn of the \textbf{ICommandExecutor} to take this integer and translate it in command that the robot is capable of execute.\\
-The behavior of the PID controller depends not only on the IErrorUpdater that generates the error, but also on 3 constants (Proportional-Integral-Derivative) that are sets with the two configure() method, good constants can make the controller more reactive and less prone to error.\\
-Every constant has a specific role:
-\begin{itemize}
-	\item \textbf{Proportional: } higher values make the controller react more strongly to errors.
-	\item \textbf{Integral: } higher values make the controller react  more strongly when errors are presents from long time.
-	\item \textbf{Derivative: } higher values make the controller react faster when the errors happen.
-\end{itemize}
-
-\noindent Using this structure the controller can be reused with any sets of sensors or robot and to perform several different tasks, for example it could be used to run a robot inside an aisle just creating different implementation of the IErrorUpdater.\\
+\noindent The IErrorUpdater calculate the tracking errors when the sensor's give new feedback, it can be queried using the getError() method in order to obtain the current error. Before start using the configure method must be called. The error calculated from an implementation of IErrorUpdater must be an integer between [-100,100] where 0 means no error, -100 totally wrong on the left and +100 totally wrong on the right. Through this measure of the error the \textbf{PID} controller generates another integer which represents the correction that must be applied to the robot to make it return on the correct track, is now the turn of the ICommandExecutor to take this integer and translate it in command that the robot is capable of execute.\\ 
+The behavior of the PID controller can now be modified with three degrees of freedom: the constants determine how fast and how strongly the controller react to errors, the implementation of IErrorUpdater determines how to calculate this error and so what is considered an error and finally the implementations of ICommandExecutor determines how the correction is physically executed.\\
+Using this structure the controller can be reused with any sets of sensors or robot and to perform several different tasks, for example it could be used to run a robot inside an aisle just creating different implementation of the IErrorUpdater.\\
 
 \subsection{Interaction}
 The communication between the remote device and the command executor is realized using standard tcp socket. Tcp is preferred over udp because ensure the correct order of arrival of the commands.\\
@@ -359,9 +385,8 @@ A typical interaction of the system can be pictured like this:
   \makebox[\textwidth]{\includegraphics[width=\textwidth]{img/InteractionDiagram.png}}
 \end{center}
 
-
 \subsection{Behavior}
-The overall behavior of the pid controller follow this state machine 
+The overall behavior of the final implementation of pid controller follow this state machine 
 \begin{center}
   \makebox[\textwidth]{\includegraphics[width=\textwidth]{img/PIDFinaleStateMachine.png}}
 \end{center}
@@ -379,11 +404,14 @@ As said above the structure is very reusable because of the modularity and adapt
   \makebox[\textwidth]{\includegraphics[width=\textwidth]{img/evoluzione.png}}
 \end{center}
 
-In order to implement this algorithm in the most general way possible the logic of population creation and score calculation are relegated to two external components: \textbf{IGenerator} and \textbf{IFitnessCalculator}. For example the implementation of IFitnessCalculator for the PID controller uses a simulator to get the score of each individual.
+\noindent The genetic computation program starts from a population of individuals, in our case different combination of PID constants, and at each iteration gives at all of them a score, called fitness, based on how well they behave. From this population a new one is generated recombining the best current solutions and adding some random mutation, the new generation created should perform better than the one before and the iteration could restarts. After a certain number of iteration we should obtain a good individual among the population, so a good set of constants.\\
+In order to implement this algorithm in the most general way possible the logic of population creation and score calculation are relegated to two external components: \textbf{IGenerator} and \textbf{IFitnessCalculator}. 
 \begin{center}
   \makebox[\textwidth]{\includegraphics[width=\textwidth]{img/geneticCalibration.png}}
 \end{center} 
-
+\noindent The \textbf{IGenerator} gives the initial population to the algorithm and at each genetic loop is responsible for the phase of selection recombination and mutation that generates the new generation. The behave of the algorithm and the speed with which converges towards an optimal solution depends strictly from this component.\\
+The \textbf{IFitnessCalculator} has the task of associating to each individual a score counter based on how well they perform, so its responsible for the correctness of the solution.\\
+For the PID calibration the generator implementation create the first generation totally with random values, then at each iterations takes the parents for the recombination among the fittest individuals of the previous generation, in the new generation is also maintained the fittest individual of the previous one in order to speed up the algorithm. The fitness calculator is instead based on a simple simulator of the robot: the behave of the individual, so of the PID controller configured with its set of constants, is tested in a simulated environment and a score is given to its performance. The simulator uses the implementation of PID controller presented above but instead of controlling a real robot, it controls a simulated one based on the simple differential drive law of physics.
 
 %===========================================================================
 
@@ -400,14 +428,17 @@ The system is deployed as a single .jar for the robot and an application for the
 %===========================================================================
 
 %===========================================================================
-\section{Maintenance}
-\labelsec{Maintenance}
+\section{Conclusion}
+\labelsec{Conclusion}
+
 %===========================================================================
 \newpage
 
 %===========================================================================
 \section{Information about the author}
 \labelsec{Author}
+Alessio Tonioni \\
+alessio.tonioni@studio.unibo.it
 %===========================================================================
 
 \vskip.5cm
@@ -424,6 +455,12 @@ The system is deployed as a single .jar for the robot and an application for the
 \end{tabular}
 
 
+\section{Bibliografia:}
+\labelsec{Biblio}
+\begin{itemize}
+	\item \textbf{PID controller} http://en.wikipedia.org/wiki/PID\_controller
+\end{itemize}
+\appendix
 %%% \begin{itemize}
 %%% \item Titolo di studio:\\ \\
 %%% \item Interessi particolari:\\ \\
@@ -440,8 +477,7 @@ The system is deployed as a single .jar for the robot and an application for the
 \appendix
 
 
-\bibliographystyle{abbrv}
-\bibliography{biblio}
+
 
 \end{document}
 
