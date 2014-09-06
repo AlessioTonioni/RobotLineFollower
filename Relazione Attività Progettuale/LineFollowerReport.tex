@@ -160,7 +160,7 @@
 %===========================================================================
 \section{Introduction}
 \labelsec{intro}
-The aim of this project it's to realize an independent controller that controls a robot and makes it capable of following a line on the ground.
+The aim of this project is to realize an independent controller that controls a robot and makes it capable of following a line on the ground.
 Furthermore the focus of the work is on the property of the software developed and how to organize the work with the purpose of obtaining a piece of reliable and reusable code. \\
 %===========================================================================
 
@@ -211,7 +211,7 @@ Main scenario:
  
 \noindent{\textbf{MakeRobotFollowLine:}}\\
 Actor: Line follower controller\\
-Post-condition: the robot is moving autonomously and it's following a line on the floor\\
+Post-condition: the robot is moving autonomously and is following a line on the floor\\
 Main scenario:
 \begin{itemize}
 	\item The robot is asked to start following a line
@@ -238,7 +238,7 @@ Main scenario:
 		\hline
  		\textbf{Term }         &  \textbf{Meaning}   \\
 		\hline
-		Command &Basic action that the robot it's capable of interpret and execute. \\
+		Command &Basic action that the robot is capable of interpret and execute. \\
 		\hline
 		Independent Controller &Autonomous entity capable of control a robot giving it command. \\
 		\hline 
@@ -254,7 +254,7 @@ Main scenario:
 %===========================================================================
 
 \subsection{(Domain)model}
-The domain it's made of at least two physically separated macro entity:\\
+The domain is made of at least two physically separated macro entity:\\
 
 \noindent{\textbf{Remote-device:}}\\
 Entity capable of connect in some way to the robot and send it command, it could be formalized with this interface.
@@ -292,14 +292,14 @@ The software system is composed of at least two physically separated entities th
 All the messages are asynchronous, the content of the message between "Remote device" and "Command receiver" should conform to a certain grammar in order to make the communication possible.\\
 The messages directed to the "executor" should conform to the given IRobot interface, for example each message could correspond to a proper call of the "execute()" method of the IRobot.\\
 The messages of start and stop from the "command receiver" to the "line follower" could be seen as creation and destruction of the "line follower", furthermore this follower must be able to receive incoming messages from the sensors so it must communicate with them.\\
-As seen all the interaction between the remote device and the robot system are transmitted through the "command receiver" that it's the only point of communication between the robot system and the outside world, the communication is mono directional, so there are no feedbacks from the robot on the correct execution of the requested action.\\
+As seen all the interaction between the remote device and the robot system are transmitted through the "command receiver" that is the only point of communication between the robot system and the outside world, the communication is mono directional, so there are no feedbacks from the robot on the correct execution of the requested action.\\
 The sensors' feedbacks are produced independently from the rest of the system, this type of messages are asynchronous and are already implemented using an observer pattern to be notified when new measurement are available.\\
 
-From this representation we can see that the "executor" is a completely passive entity capable only of execute commands when requested, instead the "line follower" is an active entity with a limited life span that could be created and destroyed at any given time, at this level of abstraction we are not interested on how the controller does it's job, the only thing it must guarantee is that when activated the robot start to follow the line. The "Command receiver" is an interpret that translate the request of the remote device in command for the "executor" and the "line follower", it must be created at the startup of the system and must remain active till the system is turned off.\\
+From this representation we can see that the "executor" is a completely passive entity capable only of execute commands when requested, instead the "line follower" is an active entity with a limited life span that could be created and destroyed at any given time, at this level of abstraction we are not interested on how the controller does its job, the only thing it must guarantee is that when activated the robot start to follow the line. The "Command receiver" is an interpret that translate the request of the remote device in command for the "executor" and the "line follower", it must be created at the startup of the system and must remain active till the system is turned off.\\
 Every "command receiver" must have an unique identifier so that a remote device can only send message to a specific one. In this architecture is possible that more than one remote devices send messages to the same command receiver, in this case there's no priority and the execution of the messages is FIFO. 
 
 \subsection{Abstraction gap}
-The infrastructure to control the robot engines and sensors is already developed, so there should be no problem for the interaction with physical devices. The communication between the entities could be implemented using standard tcp/ip protocol in order to be cross platform and scalable. The main abstractions gap are the inability to control directly the engine of the robot in order to achieve a higher precision when following a line and the absence of a way to tune the line follower controller for a certain robot in a fully automated way. Some experimental approach using genetic computation will be presented later, but the result are still not perfect.    
+The infrastructure to control the robot and the sensors is already developed, so there should not be problem for the interaction with physical devices. The communication between the entities could be implemented using standard tcp/ip protocol in order to be cross platform and scalable. The main abstractions gap are the inability to control directly the engine of the robot in order to achieve a higher precision when following a line and the absence of a way to tune the line follower controller for a certain robot in a fully automated way. Some experimental approach using genetic computation will be presented later, but the result are still not perfect.    
 
 \newpage
 %===========================================================================
@@ -336,15 +336,15 @@ For testing purpose the remote device is implemented as a simple Windows phone a
 \newpage
 \noindent{\textbf{LineFollower --> ILineFollower} project it.unibo.lineFollower}\\
 This component must be able to control autonomously the robot but at the same time must be stoppable, for this reason the ILineFollower interface extends Runnable so every controller can be instantiated as a thread that iteratively calculates the corrective commands to make the robot follow a line till someone kills it using the method terminate().\\ 
-The controller works above the Robot so the rebot isn't aware of following a line.\\
+The controller works above the Robot so the robot is not aware of following a line.\\
 The core of the project is the implementation of the ILineFollower interface for this reason a lot of different possibilities were considered during the development. The aim of this component is to make the robot able to travel inside two lines that act like barrier to delimit the correct track and to make the motion of the robot as smooth as possible: if it's possible the robot must not stop but always continue along its path applying the littlest possible correction.\\
-The robot at the user level of abstraction was capable only of execute an "IRobotCommand" so only a limited set of movements were possible, for this reason the first instance of controller was a simple state machine that applies a corrective command according to the data from the sensors. The behavior of the component could be pictured with this schema.
+The robot at the user level of abstraction was capable only of execute an "IRobotCommand" so only a limited set of movements were possible, for this reason the first instance of controller was a simple state machine that applies a corrective command according to the data from two line sensors. The behavior of the component could be pictured with this schema.
 \begin{center}
   \makebox[\textwidth]{\includegraphics[width=\textwidth]{img/LineFollowerStateMachine.png}}
 \end{center}
-\noindent This component is fully reactive and change its state only when new data are sent from the sensors, so it is not aware of the time and from how long the robot is traveling in the wrong direction. However the results were not really good: the robot tends to react slowly and without sufficient effort so it easily losts the right path.
+\noindent This component is fully reactive and change its state only when new data are sent from the sensors, so it is not aware of the time and from how long the robot is traveling in the wrong direction. However the results were not really good: the robot tends to react slowly and without sufficient effort so it easily lost the right path.
 
-From this first experiment it appears necessary to modify the interface "IRobot" to have a direct control of the robot's motors in order to perform all the possible corrective command. A new interface is defined: "IDifferentialDriveRobot" that extends "IRobot" and adds a method to control the robot via "IWheelCommand" so giving the speed of each of the robot's wheel.
+From this first experiment it appears necessary to modify the interface "IRobot" to have a direct control of the robot's motors in order to perform all the possible corrective command without restriction. A new interface is defined: "IDifferentialDriveRobot" that extends "IRobot" and adds a method to control the robot via "IWheelCommand" so giving the speed of each of the robot's wheel.
 \lstinputlisting[language=Java,basicstyle=\small\ttfamily,breaklines=true,showtabs=false,showspaces=false,breakatwhitespace=true]{/home/alessio/git/AttivitaProgettuale/it.unibo.iot.robot/src/it/unibo/iot/robot/IDifferentialDriveRobot.java}
 \noindent With this new interface we  have full control on the robot, so different degrees of correction can be applied in different situation. Now we need a component capable of determine the effort of the corrective action from the sensors data and the time, a simple state machine is not enough, something more expressive and modular is needed.\\
 Based on previous knowledge arising from the course of automatic controls an experimental solution was developed using a standard PID controller.\\
@@ -361,20 +361,21 @@ $ Correction = P*CE + I*IE + D*DE $\\
 and is then translated in a variation on the default speed for the wheel of the robot, so in a new "IWheelCommand", that remain in execution till the next loop of the controller is completed.\\
 A PID controller can be seen as the union of three different controllers: Proportional, Integral and Derivative that corresponds to the three constants said above. Every controller has a specific role:
 \begin{itemize}
-	\item \textbf{Proportional: } higher values of the constant make the controller react more strongly to errors. It's the basic controller, when there's a error try to fix it with a proportional effort.
-	\item \textbf{Integral: } higher values of the constant make the controller react more strongly when errors are presents from long time. In combination with the other is used to obtain a smoother drive for the robot.
+	\item \textbf{Proportional: } higher values of the constant make the controller react more strongly to errors. It is the basic controller, when there's a error try to fix it with a proportional effort.
+	\item \textbf{Integral: } higher values of the constant make the controller react more strongly when errors are presents from long time. In combination with the other is used to obtain a smoother drive for the robot. However to avoid too much oscillation when the proportional error goes to 0 the IE must be reseted.
 	\item \textbf{Derivative: } higher values of the constant make the controller react faster when the errors happen. Is useful when we want a controller that react quickly when an error appear. 
 \end{itemize}
 \noindent The controller PID is therefore very modular because it is possible to use only some of the three components by setting the related constants to 0, for example we can obtain a fully proportional controller setting I and D to 0.\\
-The aim of this type of controller is to complete a loop as fast as possible in order to calculate always the best turn based on fresh data, but this can be a problem if the controller works faster than the actuators, so a modular delay can be introduced between each iteration in order to manipulate how the controller behave.\\
-This behavior can be implemented as a simple "main" program and works really well as long as the controller is properly tuned with the three constants, but is not extensible or reusable: if the sensor configuration or the robot change, everything must be rewritten.\\
+The aim of this type of controller is to complete a loop as fast as possible in order to calculate always the best turn based on fresh data, but this can be a problem if the controller works faster than the actuators: the engine can't work as fast as the controller. A modular delay can be introduced between each iteration in order to manipulate how the controller behave.\\
+This behavior can be implemented as a simple "main" program and works well as long as the controller is properly tuned with the three constants, but is not extensible or reusable: if the sensor configuration or the robot change, everything must be rewritten.\\
 The first thing to do was to remove the three constants and the delay time from the code and put them in an external file, so they can be easily changed without the need to stop the robot and deploy a new jar. Then a new architecture for the controller was developed based on the principle of the separation of the responsibility: the communication with the sensors and the command execution were decoupled from the controller loop and assigned to two independent pieces of software described by the \textbf{IErrorUpdater} and \textbf{ICommandExecutor} interfaces respectively.
 \begin{center}
   \makebox[\textwidth]{\includegraphics[width=\textwidth]{img/LineFollower.png}}
 \end{center}
 
-\noindent The IErrorUpdater calculate the tracking errors when the sensor's give new feedback, it can be queried using the getError() method in order to obtain the current error. Before start using the configure method must be called. The error calculated from an implementation of IErrorUpdater must be an integer between [-100,100] where 0 means no error, -100 totally wrong on the left and +100 totally wrong on the right. Through this measure of the error the \textbf{PID} controller generates another integer which represents the correction that must be applied to the robot to make it return on the correct track, is now the turn of the ICommandExecutor to take this integer and translate it in command that the robot is capable of execute.\\ 
-The behavior of the PID controller can now be modified with three degrees of freedom: the constants determine how fast and how strongly the controller react to errors, the implementation of IErrorUpdater determines how to calculate this error and so what is considered an error and finally the implementations of ICommandExecutor determines how the correction is physically executed.\\
+\noindent The \textbf{IErrorUpdater} calculate the tracking errors when the sensors give new feedbacks, it can be queried using the getError() method in order to obtain the current error. It collects all the sensors data and translate them in an integer, as it must communicate directly with the sensors it must be configured, calling the "configure()" method, before start using it. The error calculated from an implementation of IErrorUpdater must be an integer between [-100,100] where 0 means no error, -100 totally wrong on the left and +100 totally wrong on the right. Through this measure of the error the \textbf{PID} controller generates another integer which represents the correction that must be applied to the robot to make it return on the correct track, is now the turn of the \textbf{ICommandExecutor} to take this integer and translate it in command that the robot is capable of execute. To communicate with the real robot the ICommandExecutor must be properly configured: a robot, a default speed and the default direction of movement (forward/backward) must be setted before start using it.\\ 
+This couple of components are developed in order to be reusable with different type of controller, they are independent entities that can be queried from external component in order to obtain a service, however in the final implementation are used only coupled with a PID controller.\\
+The behavior of the PID controller can now be modified with three degrees of freedom: the constants determine how fast and how strongly the controller react to errors, the implementation of IErrorUpdater determines how to calculate this error and what is considered an error; finally the implementations of ICommandExecutor determines how the correction is physically executed.\\
 Using this structure the controller can be reused with any sets of sensors or robot and to perform several different tasks, for example it could be used to run a robot inside an aisle just creating different implementation of the IErrorUpdater.\\
 
 \subsection{Interaction}
@@ -430,7 +431,8 @@ The system is deployed as a single .jar for the robot and an application for the
 %===========================================================================
 \section{Conclusion}
 \labelsec{Conclusion}
-
+The development of this solution was strongly influenced from prior knowledge arising from the course of automatic controls for the development of the line follower controller, for this reason the final solution use an implementation of PID controller instead of different solution. This type of controller was chosen because it allows to obtain good performance, it is modular, it is tunable and especially because it is strongly documented and studied. However in order to develop a controller that can be reused with different robot or sensors configuration some software engineering principles has been applied and the controller has been separated in three autonomous entities with specific responsibility. This subdivision has not worsened significantly the system performance, but, using only not real time software, there's no certainty about the exact response time of the system.\\ 
+The main limit of this implementation using a PID controller is that it must be properly tuned for the specific robot or the environment condition in order to achieve good performance as said above. A solution for this problem was tried developing an automatic controller tuner using some basic knowledge from evolutionary computation, but this solution can only be used off-line because a lot of computation time is needed. Another possibilities could be to develop another controller, let's call it \textbf{"Supervisor"}, that operates above the line follower and properly tune it on line in order to react to environment change or hostile condition. For example if during the execution a correction does not improve the tracking error the "Supervisor" could, based on an internal heuristic, decide to improve the control constants in order to make the line follower more reactive. In this vision this entities must have the capability to: monitor how the system is performing, change the line following algorithm and especially must be able to do some sort of "thinking" in order to decide what is the correct countermeasure to apply.
 %===========================================================================
 \newpage
 
